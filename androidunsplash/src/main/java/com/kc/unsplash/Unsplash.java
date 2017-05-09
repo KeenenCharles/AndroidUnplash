@@ -40,7 +40,7 @@ public class Unsplash {
         apiService = retrofit.create(UnsplashApiEndpointInterface.class);
     }
 
-    public void getPhotos(int page, int perPage, Order order, final OnPhotosLoadedListener listener){
+    public void getPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
         Call<List<Photo>> call = apiService.getPhotos(page, perPage, order.getOrder());
         call.enqueue(new Callback<List<Photo>>() {
             @Override
@@ -61,7 +61,7 @@ public class Unsplash {
         });
     }
 
-    public void getCuratedPhotos(int page, int perPage, Order order, final OnPhotosLoadedListener listener){
+    public void getCuratedPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
         Call<List<Photo>> call = apiService.getCuratedPhotos(page, perPage, order.getOrder());
         call.enqueue(new Callback<List<Photo>>() {
             @Override
