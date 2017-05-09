@@ -1,4 +1,4 @@
-# Android Unsplash
+# Android Unsplash (Unofficial)
 An unofficial Unsplash API library for Android
 
 ## Usage
