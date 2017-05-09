@@ -6,8 +6,11 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.kc.unsplash.Unsplash;
+import com.kc.unsplash.api.Order;
 import com.kc.unsplash.models.Photo;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +32,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 Log.v("Error", error);
+            }
+        });
+
+        unsplash.getPhotos(1, 10, Order.POPULAR, new Unsplash.OnPhotosLoadedListener() {
+            @Override
+            public void onComplete(List<Photo> photos) {
+                Log.d("Photos", "Photos Fetched " + photos.size());
+            }
+
+            @Override
+            public void onError(String error) {
+
             }
         });
     }

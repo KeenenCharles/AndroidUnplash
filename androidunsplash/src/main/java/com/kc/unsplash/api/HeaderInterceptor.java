@@ -17,12 +17,10 @@ public class HeaderInterceptor implements Interceptor {
     }
 
     @Override public Response intercept(Interceptor.Chain chain) throws IOException {
-        Log.d("ClientId", clientId);
         Request request = chain.request();
         request = request.newBuilder()
                 .addHeader("Authorization", "Client-ID " + clientId)
                 .build();
-        Log.d("New Request", request.header("Authorization") + " " + request.url());
         return chain.proceed(request);
     }
 }

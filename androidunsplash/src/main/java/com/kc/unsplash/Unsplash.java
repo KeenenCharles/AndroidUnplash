@@ -54,8 +54,6 @@ public class Unsplash {
 
             @Override
             public void onFailure(Call<List<Photo>> call, Throwable t) {
-                // Log error here since request failed
-                Log.d("Getting Photos", "Failure");
                 listener.onError(t.getMessage());
             }
         });
@@ -75,7 +73,6 @@ public class Unsplash {
 
             @Override
             public void onFailure(Call<List<Photo>> call, Throwable t) {
-                // Log error here since request failed
                 listener.onError(t.getMessage());
             }
         });
@@ -87,11 +84,9 @@ public class Unsplash {
 
     public void getPhoto(@NonNull String id, @Nullable Integer width, @Nullable Integer height, final OnPhotoLoadedListener listener){
         Call<Photo> call = apiService.getPhoto(id, width, height);
-        Log.d("Getting Photo", "Call");
         call.enqueue(new Callback<Photo>() {
             @Override
             public void onResponse(Call<Photo> call, Response<Photo> response) {
-                Log.d("Getting Photos", response.code() + " " + response.message());
                 int statusCode = response.code();
                 if(statusCode == 200) {
                     Photo photo = response.body();
@@ -104,8 +99,6 @@ public class Unsplash {
 
             @Override
             public void onFailure(Call<Photo> call, Throwable t) {
-                // Log error here since request failed
-                Log.d("Getting Photos", "Failure");
                 listener.onError(t.getMessage());
             }
         });
