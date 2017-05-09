@@ -1,4 +1,4 @@
-package com.kc.unsplash.net;
+package com.kc.unsplash.api;
 
 import com.kc.unsplash.models.Photo;
 

@@ -1,4 +1,4 @@
-package com.kc.unsplash.net;
+package com.kc.unsplash.api;
 
 /**
  * Created by kcred on 5/9/2017.

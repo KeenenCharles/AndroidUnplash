@@ -5,9 +5,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.kc.unsplash.models.Photo;
-import com.kc.unsplash.net.HeaderInterceptor;
-import com.kc.unsplash.net.Order;
-import com.kc.unsplash.net.UnsplashApiEndpointInterface;
+import com.kc.unsplash.api.HeaderInterceptor;
+import com.kc.unsplash.api.Order;
+import com.kc.unsplash.api.UnsplashApiEndpointInterface;
 
 import java.util.List;
 
