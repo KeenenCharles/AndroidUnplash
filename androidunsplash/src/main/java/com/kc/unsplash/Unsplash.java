@@ -42,49 +42,69 @@ public class Unsplash {
 
     public void getPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
         Call<List<Photo>> call = apiService.getPhotos(page, perPage, order.getOrder());
-        call.enqueue(new Callback<List<Photo>>() {
-            @Override
-            public void onResponse(Call<List<Photo>> call, Response<List<Photo>> response) {
-                int statusCode = response.code();
-                if(statusCode == 200) {
-                    List<Photo> photos = response.body();
-                    listener.onComplete(photos);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Photo>> call, Throwable t) {
-                listener.onError(t.getMessage());
-            }
-        });
+        call.enqueue(getMultiplePhotoCallback(listener));
     }
 
     public void getCuratedPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
         Call<List<Photo>> call = apiService.getCuratedPhotos(page, perPage, order.getOrder());
-        call.enqueue(new Callback<List<Photo>>() {
-            @Override
-            public void onResponse(Call<List<Photo>> call, Response<List<Photo>> response) {
-                int statusCode = response.code();
-                if(statusCode == 200) {
-                    List<Photo> photos = response.body();
-                    listener.onComplete(photos);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Photo>> call, Throwable t) {
-                listener.onError(t.getMessage());
-            }
-        });
+        call.enqueue(getMultiplePhotoCallback(listener));
     }
 
     public void getPhoto(@NonNull String id, final OnPhotoLoadedListener listener){
         getPhoto(id, null, null, listener);
     }
 
+    public void getRandomPhoto(@Nullable String collections,
+                               @Nullable Boolean featured, @Nullable String username,
+                               @Nullable String query, @Nullable Integer width,
+                               @Nullable Integer height, @Nullable String orientation, OnPhotoLoadedListener listener){
+        Call<Photo> call = apiService.getRandomPhoto(collections, featured, username, query, width, height, orientation);
+        call.enqueue(getSinglePhotoCallback(listener));
+    }
+
+    public void getRandomPhotos(@Nullable String collections,
+                                @Nullable Boolean featured, @Nullable String username,
+                                @Nullable String query, @Nullable Integer width,
+                                @Nullable Integer height, @Nullable String orientation,
+                                @Nullable Integer count, OnPhotosLoadedListener listener){
+        Call<List<Photo>> call = apiService.getRandomPhotos(collections, featured, username, query, width, height, orientation, count);
+        call.enqueue(getMultiplePhotoCallback(listener));
+    }
+
+    public void searchPhotos(@NonNull String query, @Nullable Integer page, @Nullable Integer perPage, OnPhotosLoadedListener listener){
+        Call<List<Photo>> call = apiService.searchPhotos(query, page, perPage);
+        call.enqueue(getMultiplePhotoCallback(listener));
+    }
+
+    public void getPhotoDownloadLink(@NonNull String id, final OnLinkLoadedListener listener){
+        Call<String> call = apiService.getPhotoDownloadLink(id);
+        call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    int statusCode = response.code();
+                    if(statusCode == 200) {
+                        listener.onComplete(response.body());
+                    }
+                    else if(statusCode == 401) {
+                        Log.d("Unsplash", "Unauthorized, Check your client Id");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    listener.onError(t.getMessage());
+                }
+            }
+        );
+    }
+
     public void getPhoto(@NonNull String id, @Nullable Integer width, @Nullable Integer height, final OnPhotoLoadedListener listener){
         Call<Photo> call = apiService.getPhoto(id, width, height);
-        call.enqueue(new Callback<Photo>() {
+        call.enqueue(getSinglePhotoCallback(listener));
+    }
+
+    private Callback<Photo> getSinglePhotoCallback(final OnPhotoLoadedListener listener){
+        return new Callback<Photo>() {
             @Override
             public void onResponse(Call<Photo> call, Response<Photo> response) {
                 int statusCode = response.code();
@@ -101,7 +121,28 @@ public class Unsplash {
             public void onFailure(Call<Photo> call, Throwable t) {
                 listener.onError(t.getMessage());
             }
-        });
+        };
+    }
+
+    private Callback<List<Photo>> getMultiplePhotoCallback(final OnPhotosLoadedListener listener){
+        return new Callback<List<Photo>>() {
+            @Override
+            public void onResponse(Call<List<Photo>> call, Response<List<Photo>> response) {
+                int statusCode = response.code();
+                if(statusCode == 200) {
+                    List<Photo> photos = response.body();
+                    listener.onComplete(photos);
+                }
+                else if(statusCode == 401) {
+                    Log.d("Unsplash", "Unauthorized, Check your client Id");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Photo>> call, Throwable t) {
+                listener.onError(t.getMessage());
+            }
+        };
     }
 
     public interface OnPhotosLoadedListener {
@@ -116,7 +157,7 @@ public class Unsplash {
         public void onError(String error);
     }
 
-    public interface OnDownloadLinkListener {
+    public interface OnLinkLoadedListener {
 
         public void onComplete(String downloadLink);
 
