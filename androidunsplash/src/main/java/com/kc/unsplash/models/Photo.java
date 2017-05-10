@@ -46,7 +46,7 @@ public class Photo implements Parcelable
     private Location location;
     @SerializedName("current_user_collections")
     @Expose
-    private List<CurrentUserCollection> currentUserCollections = new ArrayList<CurrentUserCollection>();
+    private List<Collection> currentUserCollections = new ArrayList<Collection>();
     @SerializedName("urls")
     @Expose
     private Urls urls;
@@ -78,7 +78,7 @@ public class Photo implements Parcelable
             instance.likedByUser = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.exif = ((Exif) in.readValue((Exif.class.getClassLoader())));
             instance.location = ((Location) in.readValue((Location.class.getClassLoader())));
-            in.readList(instance.currentUserCollections, (CurrentUserCollection.class.getClassLoader()));
+            in.readList(instance.currentUserCollections, (Collection.class.getClassLoader()));
             instance.urls = ((Urls) in.readValue((Urls.class.getClassLoader())));
             in.readList(instance.categories, (Category.class.getClassLoader()));
             instance.links = ((Links) in.readValue((Links.class.getClassLoader())));
@@ -119,7 +119,7 @@ public class Photo implements Parcelable
      * @param likedByUser
      * @param user
      */
-    public Photo(String id, String createdAt, String updatedAt, Integer width, Integer height, String color, Integer downloads, Integer likes, Boolean likedByUser, Exif exif, Location location, List<CurrentUserCollection> currentUserCollections, Urls urls, List<Category> categories, Links links, User user) {
+    public Photo(String id, String createdAt, String updatedAt, Integer width, Integer height, String color, Integer downloads, Integer likes, Boolean likedByUser, Exif exif, Location location, List<Collection> currentUserCollections, Urls urls, List<Category> categories, Links links, User user) {
         super();
         this.id = id;
         this.createdAt = createdAt;
@@ -282,15 +282,15 @@ public class Photo implements Parcelable
         return this;
     }
 
-    public List<CurrentUserCollection> getCurrentUserCollections() {
+    public List<Collection> getCurrentUserCollections() {
         return currentUserCollections;
     }
 
-    public void setCurrentUserCollections(List<CurrentUserCollection> currentUserCollections) {
+    public void setCurrentUserCollections(List<Collection> currentUserCollections) {
         this.currentUserCollections = currentUserCollections;
     }
 
-    public Photo withCurrentUserCollections(List<CurrentUserCollection> currentUserCollections) {
+    public Photo withCurrentUserCollections(List<Collection> currentUserCollections) {
         this.currentUserCollections = currentUserCollections;
         return this;
     }

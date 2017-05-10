@@ -4,10 +4,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.kc.unsplash.api.endpoints.CollectionsEndpointInterface;
+import com.kc.unsplash.api.endpoints.StatsEndpointInterface;
+import com.kc.unsplash.models.Collection;
 import com.kc.unsplash.models.Photo;
 import com.kc.unsplash.api.HeaderInterceptor;
 import com.kc.unsplash.api.Order;
-import com.kc.unsplash.api.UnsplashApiEndpointInterface;
+import com.kc.unsplash.api.endpoints.PhotosEndpointInterface;
+import com.kc.unsplash.models.Stats;
 
 import java.util.List;
 
@@ -23,7 +27,9 @@ public class Unsplash {
     public static final String BASE_URL = "https://api.unsplash.com/";
 
     private String clientId;
-    private UnsplashApiEndpointInterface apiService;
+    private PhotosEndpointInterface photosApiService;
+    private CollectionsEndpointInterface collectionsApiService;
+    private StatsEndpointInterface statsApiService;
 
     public Unsplash(String clientId) {
         this.clientId = clientId;
@@ -37,16 +43,18 @@ public class Unsplash {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        apiService = retrofit.create(UnsplashApiEndpointInterface.class);
+        photosApiService = retrofit.create(PhotosEndpointInterface.class);
+        collectionsApiService = retrofit.create(CollectionsEndpointInterface.class);
+        statsApiService = retrofit.create(StatsEndpointInterface.class);
     }
 
     public void getPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
-        Call<List<Photo>> call = apiService.getPhotos(page, perPage, order.getOrder());
+        Call<List<Photo>> call = photosApiService.getPhotos(page, perPage, order.getOrder());
         call.enqueue(getMultiplePhotoCallback(listener));
     }
 
     public void getCuratedPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
-        Call<List<Photo>> call = apiService.getCuratedPhotos(page, perPage, order.getOrder());
+        Call<List<Photo>> call = photosApiService.getCuratedPhotos(page, perPage, order.getOrder());
         call.enqueue(getMultiplePhotoCallback(listener));
     }
 
@@ -58,7 +66,7 @@ public class Unsplash {
                                @Nullable Boolean featured, @Nullable String username,
                                @Nullable String query, @Nullable Integer width,
                                @Nullable Integer height, @Nullable String orientation, OnPhotoLoadedListener listener){
-        Call<Photo> call = apiService.getRandomPhoto(collections, featured, username, query, width, height, orientation);
+        Call<Photo> call = photosApiService.getRandomPhoto(collections, featured, username, query, width, height, orientation);
         call.enqueue(getSinglePhotoCallback(listener));
     }
 
@@ -67,17 +75,17 @@ public class Unsplash {
                                 @Nullable String query, @Nullable Integer width,
                                 @Nullable Integer height, @Nullable String orientation,
                                 @Nullable Integer count, OnPhotosLoadedListener listener){
-        Call<List<Photo>> call = apiService.getRandomPhotos(collections, featured, username, query, width, height, orientation, count);
+        Call<List<Photo>> call = photosApiService.getRandomPhotos(collections, featured, username, query, width, height, orientation, count);
         call.enqueue(getMultiplePhotoCallback(listener));
     }
 
     public void searchPhotos(@NonNull String query, @Nullable Integer page, @Nullable Integer perPage, OnPhotosLoadedListener listener){
-        Call<List<Photo>> call = apiService.searchPhotos(query, page, perPage);
+        Call<List<Photo>> call = photosApiService.searchPhotos(query, page, perPage);
         call.enqueue(getMultiplePhotoCallback(listener));
     }
 
     public void getPhotoDownloadLink(@NonNull String id, final OnLinkLoadedListener listener){
-        Call<String> call = apiService.getPhotoDownloadLink(id);
+        Call<String> call = photosApiService.getPhotoDownloadLink(id);
         call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
@@ -99,9 +107,73 @@ public class Unsplash {
     }
 
     public void getPhoto(@NonNull String id, @Nullable Integer width, @Nullable Integer height, final OnPhotoLoadedListener listener){
-        Call<Photo> call = apiService.getPhoto(id, width, height);
+        Call<Photo> call = photosApiService.getPhoto(id, width, height);
         call.enqueue(getSinglePhotoCallback(listener));
     }
+
+    public void getCollections(Integer page, Integer perPage, final OnCollectionsLoadedListener listener){
+        Call<List<Collection>> call = collectionsApiService.getCollections(page, perPage);
+        call.enqueue(getMultipleCollectionsCallback(listener));
+    }
+
+    public void getFeaturedCollections(Integer page, Integer perPage, final OnCollectionsLoadedListener listener){
+        Call<List<Collection>> call = collectionsApiService.getFeaturedCollections(page, perPage);
+        call.enqueue(getMultipleCollectionsCallback(listener));
+    }
+
+    public void getCuratedCollections(Integer page, Integer perPage, final OnCollectionsLoadedListener listener){
+        Call<List<Collection>> call = collectionsApiService.getCuratedCollections(page, perPage);
+        call.enqueue(getMultipleCollectionsCallback(listener));
+    }
+
+    public void getRelatedCollections(String id, final OnCollectionsLoadedListener listener){
+        Call<List<Collection>> call = collectionsApiService.getRelatedCollections(id);
+        call.enqueue(getMultipleCollectionsCallback(listener));
+    }
+
+    public void getCollection(String id, final OnCollectionLoadedListener listener){
+        Call<Collection> call = collectionsApiService.getCollection(id);
+        call.enqueue(getSingleCollectionCallback(listener));
+    }
+
+    public void getCuratedCollection(String id, final OnCollectionLoadedListener listener){
+        Call<Collection> call = collectionsApiService.getCuratedCollection(id);
+        call.enqueue(getSingleCollectionCallback(listener));
+    }
+
+    public void getCollectionPhotos(String id, Integer page, Integer perPage, final OnPhotosLoadedListener listener){
+        Call<List<Photo>> call = collectionsApiService.getCollectionPhotos(id, page, perPage);
+        call.enqueue(getMultiplePhotoCallback(listener));
+    }
+
+    public void getCuratedCollectionPhotos(String id, Integer page, Integer perPage, final OnPhotosLoadedListener listener){
+        Call<List<Photo>> call = collectionsApiService.getCuratedCollectionPhotos(id, page, perPage);
+        call.enqueue(getMultiplePhotoCallback(listener));
+    }
+
+    public void getStats(final OnStatsLoadedListener listener){
+        Call<Stats> call = statsApiService.getStats();
+        call.enqueue(new Callback<Stats>() {
+             @Override
+             public void onResponse(Call<Stats> call, Response<Stats> response) {
+                 int statusCode = response.code();
+                 if(statusCode == 200) {
+                     listener.onComplete(response.body());
+                 }
+                 else if(statusCode == 401) {
+                     Log.d("Unsplash", "Unauthorized, Check your client Id");
+                 }
+             }
+
+             @Override
+             public void onFailure(Call<Stats> call, Throwable t) {
+                 listener.onError(t.getMessage());
+             }
+         }
+        );
+    }
+
+    // CALLBACKS
 
     private Callback<Photo> getSinglePhotoCallback(final OnPhotoLoadedListener listener){
         return new Callback<Photo>() {
@@ -145,6 +217,48 @@ public class Unsplash {
         };
     }
 
+    private Callback<Collection> getSingleCollectionCallback(final OnCollectionLoadedListener listener){
+        return new Callback<Collection>() {
+            @Override
+            public void onResponse(Call<Collection> call, Response<Collection> response) {
+                int statusCode = response.code();
+                if(statusCode == 200) {
+                    Collection collections = response.body();
+                    listener.onComplete(collections);
+                }
+                else if(statusCode == 401) {
+                    Log.d("Unsplash", "Unauthorized, Check your client Id");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Collection> call, Throwable t) {
+                listener.onError(t.getMessage());
+            }
+        };
+    }
+
+    private Callback<List<Collection>> getMultipleCollectionsCallback(final OnCollectionsLoadedListener listener){
+        return new Callback<List<Collection>>() {
+            @Override
+            public void onResponse(Call<List<Collection>> call, Response<List<Collection>> response) {
+                int statusCode = response.code();
+                if(statusCode == 200) {
+                    List<Collection> collections = response.body();
+                    listener.onComplete(collections);
+                }
+                else if(statusCode == 401) {
+                    Log.d("Unsplash", "Unauthorized, Check your client Id");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Collection>> call, Throwable t) {
+                listener.onError(t.getMessage());
+            }
+        };
+    }
+
     public interface OnPhotosLoadedListener {
         public void onComplete(List<Photo> photos);
 
@@ -164,4 +278,21 @@ public class Unsplash {
         public void onError(String error);
     }
 
+    public interface OnCollectionsLoadedListener {
+        public void onComplete(List<Collection> collections);
+
+        public void onError(String error);
+    }
+
+    public interface OnCollectionLoadedListener {
+        public void onComplete(Collection photos);
+
+        public void onError(String error);
+    }
+
+    public interface OnStatsLoadedListener {
+        public void onComplete(Stats stats);
+
+        public void onError(String error);
+    }
 }

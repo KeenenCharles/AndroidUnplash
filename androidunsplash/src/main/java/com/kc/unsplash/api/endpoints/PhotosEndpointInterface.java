@@ -1,4 +1,4 @@
-package com.kc.unsplash.api;
+package com.kc.unsplash.api.endpoints;
 
 import com.kc.unsplash.models.Photo;
 
@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface UnsplashApiEndpointInterface {
+public interface PhotosEndpointInterface {
 
     @GET("photos/{id}")
     Call<Photo> getPhoto(@Path("id") String id, @Query("w") Integer width, @Query("h") Integer height);

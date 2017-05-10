@@ -1,3 +1,4 @@
+
 package com.kc.unsplash.models;
 
 import android.os.Parcel;
@@ -6,7 +7,7 @@ import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CurrentUserCollection implements Parcelable
+public class Collection implements Parcelable
 {
 
     @SerializedName("id")
@@ -15,6 +16,9 @@ public class CurrentUserCollection implements Parcelable
     @SerializedName("title")
     @Expose
     private String title;
+    @SerializedName("description")
+    @Expose
+    private String description;
     @SerializedName("published_at")
     @Expose
     private String publishedAt;
@@ -24,6 +28,15 @@ public class CurrentUserCollection implements Parcelable
     @SerializedName("curated")
     @Expose
     private Boolean curated;
+    @SerializedName("total_photos")
+    @Expose
+    private Integer totalPhotos;
+    @SerializedName("private")
+    @Expose
+    private Boolean _private;
+    @SerializedName("share_key")
+    @Expose
+    private String shareKey;
     @SerializedName("cover_photo")
     @Expose
     private CoverPhoto coverPhoto;
@@ -33,61 +46,35 @@ public class CurrentUserCollection implements Parcelable
     @SerializedName("links")
     @Expose
     private Links links;
-    public final static Parcelable.Creator<CurrentUserCollection> CREATOR = new Creator<CurrentUserCollection>() {
+    public final static Creator<Collection> CREATOR = new Creator<Collection>() {
 
 
         @SuppressWarnings({
             "unchecked"
         })
-        public CurrentUserCollection createFromParcel(Parcel in) {
-            CurrentUserCollection instance = new CurrentUserCollection();
+        public Collection createFromParcel(Parcel in) {
+            Collection instance = new Collection();
             instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.title = ((String) in.readValue((String.class.getClassLoader())));
+            instance.description = ((String) in.readValue((String.class.getClassLoader())));
             instance.publishedAt = ((String) in.readValue((String.class.getClassLoader())));
             instance.updatedAt = ((String) in.readValue((String.class.getClassLoader())));
             instance.curated = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+            instance.totalPhotos = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance._private = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+            instance.shareKey = ((String) in.readValue((String.class.getClassLoader())));
             instance.coverPhoto = ((CoverPhoto) in.readValue((CoverPhoto.class.getClassLoader())));
             instance.user = ((User) in.readValue((User.class.getClassLoader())));
             instance.links = ((Links) in.readValue((Links.class.getClassLoader())));
             return instance;
         }
 
-        public CurrentUserCollection[] newArray(int size) {
-            return (new CurrentUserCollection[size]);
+        public Collection[] newArray(int size) {
+            return (new Collection[size]);
         }
 
     }
     ;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public CurrentUserCollection() {
-    }
-
-    /**
-     * 
-     * @param updatedAt
-     * @param publishedAt
-     * @param id
-     * @param title
-     * @param coverPhoto
-     * @param curated
-     * @param links
-     * @param user
-     */
-    public CurrentUserCollection(Integer id, String title, String publishedAt, String updatedAt, Boolean curated, CoverPhoto coverPhoto, User user, Links links) {
-        super();
-        this.id = id;
-        this.title = title;
-        this.publishedAt = publishedAt;
-        this.updatedAt = updatedAt;
-        this.curated = curated;
-        this.coverPhoto = coverPhoto;
-        this.user = user;
-        this.links = links;
-    }
 
     public Integer getId() {
         return id;
@@ -95,11 +82,6 @@ public class CurrentUserCollection implements Parcelable
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public CurrentUserCollection withId(Integer id) {
-        this.id = id;
-        return this;
     }
 
     public String getTitle() {
@@ -110,9 +92,12 @@ public class CurrentUserCollection implements Parcelable
         this.title = title;
     }
 
-    public CurrentUserCollection withTitle(String title) {
-        this.title = title;
-        return this;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPublishedAt() {
@@ -123,22 +108,12 @@ public class CurrentUserCollection implements Parcelable
         this.publishedAt = publishedAt;
     }
 
-    public CurrentUserCollection withPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
-        return this;
-    }
-
     public String getUpdatedAt() {
         return updatedAt;
     }
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public CurrentUserCollection withUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
     }
 
     public Boolean getCurated() {
@@ -149,9 +124,28 @@ public class CurrentUserCollection implements Parcelable
         this.curated = curated;
     }
 
-    public CurrentUserCollection withCurated(Boolean curated) {
-        this.curated = curated;
-        return this;
+    public Integer getTotalPhotos() {
+        return totalPhotos;
+    }
+
+    public void setTotalPhotos(Integer totalPhotos) {
+        this.totalPhotos = totalPhotos;
+    }
+
+    public Boolean getPrivate() {
+        return _private;
+    }
+
+    public void setPrivate(Boolean _private) {
+        this._private = _private;
+    }
+
+    public String getShareKey() {
+        return shareKey;
+    }
+
+    public void setShareKey(String shareKey) {
+        this.shareKey = shareKey;
     }
 
     public CoverPhoto getCoverPhoto() {
@@ -162,22 +156,12 @@ public class CurrentUserCollection implements Parcelable
         this.coverPhoto = coverPhoto;
     }
 
-    public CurrentUserCollection withCoverPhoto(CoverPhoto coverPhoto) {
-        this.coverPhoto = coverPhoto;
-        return this;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public CurrentUserCollection withUser(User user) {
-        this.user = user;
-        return this;
     }
 
     public Links getLinks() {
@@ -188,17 +172,16 @@ public class CurrentUserCollection implements Parcelable
         this.links = links;
     }
 
-    public CurrentUserCollection withLinks(Links links) {
-        this.links = links;
-        return this;
-    }
-
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(title);
+        dest.writeValue(description);
         dest.writeValue(publishedAt);
         dest.writeValue(updatedAt);
         dest.writeValue(curated);
+        dest.writeValue(totalPhotos);
+        dest.writeValue(_private);
+        dest.writeValue(shareKey);
         dest.writeValue(coverPhoto);
         dest.writeValue(user);
         dest.writeValue(links);
