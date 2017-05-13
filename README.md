@@ -35,6 +35,14 @@ unsplash.getPhoto(PHOTO_ID, new Unsplash.OnPhotoLoadedListener() {
 });
 ~~~~~
 
+## Gradle
+Add the line below to your build.gradle to use:
+~~~
+dependencies {
+    compile 'com.kc.androidunsplash:androidunsplash:0.1.0'
+}
+~~~
+
 ## To-Do
 + Statistics
 + Actions that require user authentication
