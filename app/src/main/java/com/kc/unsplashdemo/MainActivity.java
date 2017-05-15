@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String CLIENT_ID = "707647e260561940c8b1ac9f092a88b5c83b16d87b267f320316aabb631f764a";
+    private final String CLIENT_ID = "YOUR_CLIENT_ID";
     private Unsplash unsplash;
     private RecyclerView recyclerView;
 
