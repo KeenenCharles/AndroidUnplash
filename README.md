@@ -7,7 +7,7 @@ An unofficial Unsplash API library for Android
 ~~~~~
 Unsplash unsplash = new Unsplash(YOUR_CLIENT_ID);
 ~~~~~
-You can sign up for a client id at <https://unsplash.com/developers>
+You can sign up for a Client Id at <https://unsplash.com/developers>
 
 ### Get A List of Photos
 ~~~~~
