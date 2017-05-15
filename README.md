@@ -78,7 +78,7 @@ Take a look at the API documentation for what each call does in detail <https://
 Add the line below to your build.gradle to use:
 ~~~
 dependencies {
-    compile 'com.kc.androidunsplash:androidunsplash:0.1.0'
+    compile 'com.kc.androidunsplash:androidunsplash:0.1.1'
 }
 ~~~
 
