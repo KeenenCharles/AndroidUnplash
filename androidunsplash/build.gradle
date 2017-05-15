@@ -28,3 +28,30 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
 }
+
+ext {
+    bintrayRepo = 'android-unsplash'
+    bintrayName = 'android-unsplash'
+
+    publishedGroupId = 'com.kc.androidunsplash'
+    libraryName = 'androidunsplash'
+    artifact = 'androidunsplash'
+
+    libraryDescription = 'An unofficial library to access the Unsplash API'
+
+    siteUrl = 'https://github.com/KeenenCharles/AndroidUnplash'
+    gitUrl = 'https://github.com/KeenenCharles/AndroidUnplash.git'
+
+    libraryVersion = '0.1.0'
+
+    developerId = 'keenencharles'
+    developerName = 'Keenen Charles'
+    developerEmail = 'keenencharles@gmail.com'
+
+    licenseName = 'MIT License'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["MIT"]
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

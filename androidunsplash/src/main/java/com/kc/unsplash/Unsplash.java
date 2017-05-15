@@ -11,6 +11,7 @@ import com.kc.unsplash.models.Photo;
 import com.kc.unsplash.api.HeaderInterceptor;
 import com.kc.unsplash.api.Order;
 import com.kc.unsplash.api.endpoints.PhotosEndpointInterface;
+import com.kc.unsplash.models.SearchResults;
 import com.kc.unsplash.models.Stats;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class Unsplash {
     private PhotosEndpointInterface photosApiService;
     private CollectionsEndpointInterface collectionsApiService;
     private StatsEndpointInterface statsApiService;
+    private String TAG = "Unsplash";
 
     public Unsplash(String clientId) {
         this.clientId = clientId;
@@ -79,9 +81,13 @@ public class Unsplash {
         call.enqueue(getMultiplePhotoCallback(listener));
     }
 
-    public void searchPhotos(@NonNull String query, @Nullable Integer page, @Nullable Integer perPage, OnPhotosLoadedListener listener){
-        Call<List<Photo>> call = photosApiService.searchPhotos(query, page, perPage);
-        call.enqueue(getMultiplePhotoCallback(listener));
+    public void searchPhotos(@NonNull String query, OnSearchCompleteListener listener){
+        searchPhotos(query, null, null, listener);
+    }
+
+    public void searchPhotos(@NonNull String query, @Nullable Integer page, @Nullable Integer perPage, OnSearchCompleteListener listener){
+        Call<SearchResults> call = photosApiService.searchPhotos(query, page, perPage);
+        call.enqueue(getSearchResultsCallback(listener));
     }
 
     public void getPhotoDownloadLink(@NonNull String id, final OnLinkLoadedListener listener){
@@ -94,7 +100,7 @@ public class Unsplash {
                         listener.onComplete(response.body());
                     }
                     else if(statusCode == 401) {
-                        Log.d("Unsplash", "Unauthorized, Check your client Id");
+                        Log.d(TAG, "Unauthorized, Check your client Id");
                     }
                 }
 
@@ -157,11 +163,12 @@ public class Unsplash {
              @Override
              public void onResponse(Call<Stats> call, Response<Stats> response) {
                  int statusCode = response.code();
+                 Log.d(TAG, "Status Code = " + statusCode);
                  if(statusCode == 200) {
                      listener.onComplete(response.body());
                  }
                  else if(statusCode == 401) {
-                     Log.d("Unsplash", "Unauthorized, Check your client Id");
+                     Log.d(TAG, "Unauthorized, Check your client Id");
                  }
              }
 
@@ -180,12 +187,13 @@ public class Unsplash {
             @Override
             public void onResponse(Call<Photo> call, Response<Photo> response) {
                 int statusCode = response.code();
+                Log.d(TAG, "Status Code = " + statusCode);
                 if(statusCode == 200) {
                     Photo photo = response.body();
                     listener.onComplete(photo);
                 }
                 else if(statusCode == 401) {
-                    Log.d("Unsplash", "Unauthorized, Check your client Id");
+                    Log.d(TAG, "Unauthorized, Check your client Id");
                 }
             }
 
@@ -201,17 +209,20 @@ public class Unsplash {
             @Override
             public void onResponse(Call<List<Photo>> call, Response<List<Photo>> response) {
                 int statusCode = response.code();
+                Log.d(TAG, "Url = " + call.request().url());
+                Log.d(TAG, "Status Code = " + statusCode);
                 if(statusCode == 200) {
                     List<Photo> photos = response.body();
                     listener.onComplete(photos);
                 }
                 else if(statusCode == 401) {
-                    Log.d("Unsplash", "Unauthorized, Check your client Id");
+                    Log.d(TAG, "Unauthorized, Check your client Id");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Photo>> call, Throwable t) {
+                Log.d(TAG, "Url = " + call.request().url());
                 listener.onError(t.getMessage());
             }
         };
@@ -222,12 +233,13 @@ public class Unsplash {
             @Override
             public void onResponse(Call<Collection> call, Response<Collection> response) {
                 int statusCode = response.code();
+                Log.d(TAG, "Status Code = " + statusCode);
                 if(statusCode == 200) {
                     Collection collections = response.body();
                     listener.onComplete(collections);
                 }
                 else if(statusCode == 401) {
-                    Log.d("Unsplash", "Unauthorized, Check your client Id");
+                    Log.d(TAG, "Unauthorized, Check your client Id");
                 }
             }
 
@@ -238,17 +250,40 @@ public class Unsplash {
         };
     }
 
+    private Callback<SearchResults> getSearchResultsCallback(final OnSearchCompleteListener listener){
+        return new Callback<SearchResults>() {
+            @Override
+            public void onResponse(Call<SearchResults> call, Response<SearchResults> response) {
+                int statusCode = response.code();
+                Log.d(TAG, "Status Code = " + statusCode);
+                if(statusCode == 200) {
+                    SearchResults results = response.body();
+                    listener.onComplete(results);
+                }
+                else if(statusCode == 401) {
+                    Log.d(TAG, "Unauthorized, Check your client Id");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchResults> call, Throwable t) {
+                listener.onError(t.getMessage());
+            }
+        };
+    }
+
     private Callback<List<Collection>> getMultipleCollectionsCallback(final OnCollectionsLoadedListener listener){
         return new Callback<List<Collection>>() {
             @Override
             public void onResponse(Call<List<Collection>> call, Response<List<Collection>> response) {
                 int statusCode = response.code();
+                Log.d(TAG, "Status Code = " + statusCode);
                 if(statusCode == 200) {
                     List<Collection> collections = response.body();
                     listener.onComplete(collections);
                 }
                 else if(statusCode == 401) {
-                    Log.d("Unsplash", "Unauthorized, Check your client Id");
+                    Log.d(TAG, "Unauthorized, Check your client Id");
                 }
             }
 
@@ -260,15 +295,21 @@ public class Unsplash {
     }
 
     public interface OnPhotosLoadedListener {
-        public void onComplete(List<Photo> photos);
+        void onComplete(List<Photo> photos);
 
-        public void onError(String error);
+        void onError(String error);
+    }
+
+    public interface OnSearchCompleteListener {
+        void onComplete(SearchResults results);
+
+        void onError(String error);
     }
 
     public interface OnPhotoLoadedListener {
-        public void onComplete(Photo photo);
+        void onComplete(Photo photo);
 
-        public void onError(String error);
+        void onError(String error);
     }
 
     public interface OnLinkLoadedListener {

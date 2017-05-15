@@ -1,6 +1,7 @@
 package com.kc.unsplash.api.endpoints;
 
 import com.kc.unsplash.models.Photo;
+import com.kc.unsplash.models.SearchResults;
 
 import java.util.List;
 
@@ -39,5 +40,5 @@ public interface PhotosEndpointInterface {
     Call<String> getPhotoDownloadLink(@Path("id") String id);
 
     @GET("search/photos")
-    Call<List<Photo>> searchPhotos(@Query("query") String query, @Query("page") Integer page, @Query("per_page") Integer perPage);
+    Call<SearchResults> searchPhotos(@Query("query") String query, @Query("page") Integer page, @Query("per_page") Integer perPage);
 }
