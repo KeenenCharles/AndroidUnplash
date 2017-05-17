@@ -46,13 +46,13 @@ public class Photo implements Parcelable
     private Location location;
     @SerializedName("current_user_collections")
     @Expose
-    private List<Collection> currentUserCollections = new ArrayList<Collection>();
+    private List<Collection> currentUserCollections = new ArrayList<>();
     @SerializedName("urls")
     @Expose
     private Urls urls;
     @SerializedName("categories")
     @Expose
-    private List<Category> categories = new ArrayList<Category>();
+    private List<Category> categories = new ArrayList<>();
     @SerializedName("links")
     @Expose
     private Links links;

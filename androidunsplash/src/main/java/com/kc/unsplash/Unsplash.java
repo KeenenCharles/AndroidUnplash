@@ -314,26 +314,26 @@ public class Unsplash {
 
     public interface OnLinkLoadedListener {
 
-        public void onComplete(String downloadLink);
+        void onComplete(String downloadLink);
 
-        public void onError(String error);
+        void onError(String error);
     }
 
     public interface OnCollectionsLoadedListener {
-        public void onComplete(List<Collection> collections);
+        void onComplete(List<Collection> collections);
 
-        public void onError(String error);
+        void onError(String error);
     }
 
     public interface OnCollectionLoadedListener {
-        public void onComplete(Collection photos);
+        void onComplete(Collection photos);
 
-        public void onError(String error);
+        void onError(String error);
     }
 
     public interface OnStatsLoadedListener {
-        public void onComplete(Stats stats);
+        void onComplete(Stats stats);
 
-        public void onError(String error);
+        void onError(String error);
     }
 }

@@ -37,7 +37,7 @@ public class CoverPhoto implements Parcelable
     private Urls urls;
     @SerializedName("categories")
     @Expose
-    private List<Category> categories = new ArrayList<Category>();
+    private List<Category> categories = new ArrayList<>();
     @SerializedName("links")
     @Expose
     private Links links;
