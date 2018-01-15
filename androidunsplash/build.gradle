@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
-        versionName "0.1.2"
+        versionName "0.2.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -23,9 +23,35 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:27.0.2'
 }
 
 
+ext {
+    bintrayRepo = 'android-unsplash'
+    bintrayName = 'android-unsplash'
+
+    publishedGroupId = 'com.kc.androidunsplash'
+    libraryName = 'androidunsplash'
+    artifact = 'androidunsplash'
+
+    libraryDescription = 'An unofficial library to access the Unsplash API'
+
+    siteUrl = 'https://github.com/KeenenCharles/AndroidUnplash'
+    gitUrl = 'https://github.com/KeenenCharles/AndroidUnplash.git'
+
+    libraryVersion = '0.2.0'
+
+    developerId = 'keenencharles'
+    developerName = 'Keenen Charles'
+    developerEmail = 'keenencharles@gmail.com'
+
+    licenseName = 'MIT License'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["MIT"]
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
