@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.kc.unsplash.Unsplash;
 import com.kc.unsplash.api.Order;
+import com.kc.unsplash.models.Download;
 import com.kc.unsplash.models.Photo;
 import com.kc.unsplash.models.SearchResults;
 
@@ -28,26 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
         unsplash = new Unsplash(CLIENT_ID);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
-        unsplash.getPhotos(1, 10, Order.POPULAR, new Unsplash.OnPhotosLoadedListener() {
-            @Override
-            public void onComplete(List<Photo> photos) {
-                Log.d("Photos", "Photos Fetched " + photos.size());
-                PhotoRecyclerAdapter adapter = new PhotoRecyclerAdapter(photos, MainActivity.this);
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
     }
 
     public void search(View view){
-        EditText editText = (EditText) findViewById(R.id.editText);
+        EditText editText = findViewById(R.id.editText);
         String query = editText.getText().toString();
 
         unsplash.searchPhotos(query, new Unsplash.OnSearchCompleteListener() {

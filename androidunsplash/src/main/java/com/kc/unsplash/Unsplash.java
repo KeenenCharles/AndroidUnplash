@@ -7,6 +7,7 @@ import android.util.Log;
 import com.kc.unsplash.api.endpoints.CollectionsEndpointInterface;
 import com.kc.unsplash.api.endpoints.StatsEndpointInterface;
 import com.kc.unsplash.models.Collection;
+import com.kc.unsplash.models.Download;
 import com.kc.unsplash.models.Photo;
 import com.kc.unsplash.api.HeaderInterceptor;
 import com.kc.unsplash.api.Order;
@@ -91,12 +92,13 @@ public class Unsplash {
     }
 
     public void getPhotoDownloadLink(@NonNull String id, final OnLinkLoadedListener listener){
-        Call<String> call = photosApiService.getPhotoDownloadLink(id);
-        call.enqueue(new Callback<String>() {
+        Call<Download> call = photosApiService.getPhotoDownloadLink(id);
+        call.enqueue(new Callback<Download>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<Download> call, Response<Download> response) {
                     int statusCode = response.code();
                     if(statusCode == 200) {
+                        Log.d(TAG, response.body().getUrl());
                         listener.onComplete(response.body());
                     }
                     else if(statusCode == 401) {
@@ -105,7 +107,7 @@ public class Unsplash {
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
+                public void onFailure(Call<Download> call, Throwable t) {
                     listener.onError(t.getMessage());
                 }
             }
@@ -314,7 +316,7 @@ public class Unsplash {
 
     public interface OnLinkLoadedListener {
 
-        void onComplete(String downloadLink);
+        void onComplete(Download downloadLink);
 
         void onError(String error);
     }
