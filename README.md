@@ -82,8 +82,9 @@ dependencies {
 }
 ~~~
 
-## To-Do
-+ User Authentication
+## Built With This Library
++ [Walldrobe](https://play.google.com/store/apps/details?id=walldrobe.coffecode.com)
++ [Love Diary](https://play.google.com/store/apps/details?id=com.kilic.tweetydiary)
 
 # License
 ~~~
