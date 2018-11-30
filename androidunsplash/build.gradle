@@ -42,7 +42,7 @@ ext {
     siteUrl = 'https://github.com/KeenenCharles/AndroidUnplash'
     gitUrl = 'https://github.com/KeenenCharles/AndroidUnplash.git'
 
-    libraryVersion = '0.2.0'
+    libraryVersion = '1.0.0'
 
     developerId = 'keenencharles'
     developerName = 'Keenen Charles'
