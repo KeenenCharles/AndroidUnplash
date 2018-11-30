@@ -1,16 +1,16 @@
 package com.kc.unsplashdemo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.kc.unsplash.Unsplash;
 import com.kc.unsplash.api.Order;
-import com.kc.unsplash.models.Download;
 import com.kc.unsplash.models.Photo;
 import com.kc.unsplash.models.SearchResults;
 
@@ -18,9 +18,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String CLIENT_ID = "HK&U0i91k2msadjksaljdks";
+    private final String CLIENT_ID = "88b1e272f6844704b944eabaa69b2954864c203e3faa36af99dcb6590b07239a";
     private Unsplash unsplash;
-    private RecyclerView recyclerView;
+    private PhotoRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +29,23 @@ public class MainActivity extends AppCompatActivity {
 
         unsplash = new Unsplash(CLIENT_ID);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+
+        adapter = new PhotoRecyclerAdapter();
+        recyclerView.setAdapter(adapter);
+
+        unsplash.getPhotos(1, 10, Order.LATEST, new Unsplash.OnPhotosLoadedListener() {
+            @Override
+            public void onComplete(List<Photo> photos) {
+                adapter.setPhotos(photos);
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     public void search(View view){
@@ -42,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(SearchResults results) {
                 Log.d("Photos", "Total Results Found " + results.getTotal());
                 List<Photo> photos = results.getResults();
-                PhotoRecyclerAdapter adapter = new PhotoRecyclerAdapter(photos);
-                recyclerView.setAdapter(adapter);
+                adapter.setPhotos(photos);
             }
 
             @Override
