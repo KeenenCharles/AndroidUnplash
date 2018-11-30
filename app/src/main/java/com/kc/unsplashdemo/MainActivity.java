@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(SearchResults results) {
                 Log.d("Photos", "Total Results Found " + results.getTotal());
                 List<Photo> photos = results.getResults();
-                PhotoRecyclerAdapter adapter = new PhotoRecyclerAdapter(photos, MainActivity.this);
+                PhotoRecyclerAdapter adapter = new PhotoRecyclerAdapter(photos);
                 recyclerView.setAdapter(adapter);
             }
 

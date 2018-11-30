@@ -1,6 +1,7 @@
 package com.kc.unsplashdemo;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,12 @@ import java.util.List;
 public class PhotoRecyclerAdapter extends RecyclerView.Adapter<PhotoRecyclerAdapter.ViewHolder> {
 
     private final List<Photo> photoList;
-    private Context mContext;
 
-    public PhotoRecyclerAdapter(List<Photo> photos, Context context) {
+    public PhotoRecyclerAdapter(List<Photo> photos) {
         photoList = photos;
-        mContext = context;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_photo, parent, false);
@@ -32,7 +32,7 @@ public class PhotoRecyclerAdapter extends RecyclerView.Adapter<PhotoRecyclerAdap
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Photo photo = photoList.get(position);
 
-        Picasso.with(mContext).load(photo.getUrls().getRegular()).into(holder.imageView);
+        Picasso.get().load(photo.getUrls().getRegular()).into(holder.imageView);
     }
 
     @Override
