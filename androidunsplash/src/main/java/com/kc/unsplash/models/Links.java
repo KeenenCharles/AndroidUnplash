@@ -28,6 +28,14 @@ public class Links implements Parcelable {
     @Expose
     private String portfolio;
 
+    @SerializedName("download")
+    @Expose
+    private String download;
+
+    @SerializedName("download_location")
+    @Expose
+    private String downloadLocation;
+
     public final static Parcelable.Creator<Links> CREATOR = new Creator<Links>() {
 
         @SuppressWarnings({"unchecked"})
@@ -47,6 +55,8 @@ public class Links implements Parcelable {
         this.photos = ((String) in.readValue((String.class.getClassLoader())));
         this.likes = ((String) in.readValue((String.class.getClassLoader())));
         this.portfolio = ((String) in.readValue((String.class.getClassLoader())));
+        this.download = ((String) in .readValue((String.class.getClassLoader())));
+        this.downloadLocation = ((String) in .readValue((String.class.getClassLoader())));
     }
 
     public Links() {
@@ -92,12 +102,30 @@ public class Links implements Parcelable {
         this.portfolio = portfolio;
     }
 
+    public String getDownload() {
+        return download;
+    }
+
+    public void setDownload(String download) {
+        this.download = download;
+    }
+
+    public String getDownloadLocation() {
+        return downloadLocation;
+    }
+
+    public void setDownloadLocation(String downloadLocation) {
+        this.downloadLocation = downloadLocation;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(self);
         dest.writeValue(html);
         dest.writeValue(photos);
         dest.writeValue(likes);
         dest.writeValue(portfolio);
+        dest.writeValue(download);
+        dest.writeValue(downloadLocation);
     }
 
     public int describeContents() {

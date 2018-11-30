@@ -43,7 +43,7 @@ public class Photo implements Parcelable
     private Exif exif;
     @SerializedName("location")
     @Expose
-    private String location;
+    private Location location;
     @SerializedName("current_user_collections")
     @Expose
     private List<Collection> currentUserCollections = new ArrayList<>();
@@ -77,7 +77,7 @@ public class Photo implements Parcelable
             instance.likes = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.likedByUser = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.exif = ((Exif) in.readValue((Exif.class.getClassLoader())));
-            instance.location = ((String) in.readValue((String.class.getClassLoader())));
+            instance.location = ((Location) in.readValue((Location.class.getClassLoader())));
             in.readList(instance.currentUserCollections, (Collection.class.getClassLoader()));
             instance.urls = ((Urls) in.readValue((Urls.class.getClassLoader())));
             in.readList(instance.categories, (Category.class.getClassLoader()));
@@ -119,7 +119,7 @@ public class Photo implements Parcelable
      * @param likedByUser
      * @param user
      */
-    public Photo(String id, String createdAt, String updatedAt, Integer width, Integer height, String color, Integer downloads, Integer likes, Boolean likedByUser, Exif exif, String location, List<Collection> currentUserCollections, Urls urls, List<Category> categories, Links links, User user) {
+    public Photo(String id, String createdAt, String updatedAt, Integer width, Integer height, String color, Integer downloads, Integer likes, Boolean likedByUser, Exif exif, Location location, List<Collection> currentUserCollections, Urls urls, List<Category> categories, Links links, User user) {
         super();
         this.id = id;
         this.createdAt = createdAt;
@@ -269,15 +269,15 @@ public class Photo implements Parcelable
         return this;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
-    public Photo withLocation(String location) {
+    public Photo withLocation(Location location) {
         this.location = location;
         return this;
     }

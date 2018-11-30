@@ -2,9 +2,10 @@ package com.kc.unsplash.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class User implements Parcelable {
 
@@ -91,6 +92,10 @@ public class User implements Parcelable {
     @SerializedName("links")
     @Expose
     private Links links;
+
+    @SerializedName("current_user_collections")
+    @Expose
+    private List<CurrentUserCollection> currentUserCollections = null;
 
     public final static Parcelable.Creator<User> CREATOR = new Creator<User>() {
 
@@ -300,6 +305,14 @@ public class User implements Parcelable {
         this.links = links;
     }
 
+    public List<CurrentUserCollection> getCurrentUserCollections() {
+        return currentUserCollections;
+    }
+
+    public void setCurrentUserCollections(List<CurrentUserCollection> currentUserCollections) {
+        this.currentUserCollections = currentUserCollections;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(updatedAt);
@@ -322,6 +335,7 @@ public class User implements Parcelable {
         dest.writeValue(profileImage);
         dest.writeValue(badge);
         dest.writeValue(links);
+        dest.writeList(currentUserCollections);
     }
 
     public int describeContents() {
