@@ -1,4 +1,3 @@
-
 package com.kc.unsplash.models;
 
 import android.os.Parcel;
@@ -7,105 +6,130 @@ import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User implements Parcelable
-{
+public class User implements Parcelable {
 
     @SerializedName("id")
     @Expose
     private String id;
+
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
+
     @SerializedName("username")
     @Expose
     private String username;
+
     @SerializedName("name")
     @Expose
     private String name;
+
+    @SerializedName("first_name")
+    @Expose
+    private String firstName;
+
+    @SerializedName("last_name")
+    @Expose
+    private String lastName;
+
+    @SerializedName("instagram_username")
+    @Expose
+    private String instagramUsername;
+
+    @SerializedName("twitter_username")
+    @Expose
+    private String twitterUsername;
+
     @SerializedName("portfolio_url")
     @Expose
-    private String portfolioUrl;
+    private Object portfolioUrl;
+
     @SerializedName("bio")
     @Expose
     private String bio;
+
     @SerializedName("location")
     @Expose
     private String location;
+
     @SerializedName("total_likes")
     @Expose
     private Integer totalLikes;
+
     @SerializedName("total_photos")
     @Expose
     private Integer totalPhotos;
+
     @SerializedName("total_collections")
     @Expose
     private Integer totalCollections;
+
+    @SerializedName("followed_by_user")
+    @Expose
+    private Boolean followedByUser;
+
+    @SerializedName("followers_count")
+    @Expose
+    private Integer followersCount;
+
+    @SerializedName("following_count")
+    @Expose
+    private Integer followingCount;
+
+    @SerializedName("downloads")
+    @Expose
+    private Integer downloads;
+
     @SerializedName("profile_image")
     @Expose
     private ProfileImage profileImage;
+
+    @SerializedName("badge")
+    @Expose
+    private Badge badge;
+
     @SerializedName("links")
     @Expose
     private Links links;
+
     public final static Parcelable.Creator<User> CREATOR = new Creator<User>() {
 
-
-        @SuppressWarnings({
-            "unchecked"
-        })
+        @SuppressWarnings({"unchecked"})
         public User createFromParcel(Parcel in) {
-            User instance = new User();
-            instance.id = ((String) in.readValue((String.class.getClassLoader())));
-            instance.username = ((String) in.readValue((String.class.getClassLoader())));
-            instance.name = ((String) in.readValue((String.class.getClassLoader())));
-            instance.portfolioUrl = ((String) in.readValue((String.class.getClassLoader())));
-            instance.bio = ((String) in.readValue((String.class.getClassLoader())));
-            instance.location = ((String) in.readValue((String.class.getClassLoader())));
-            instance.totalLikes = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.totalPhotos = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.totalCollections = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.profileImage = ((ProfileImage) in.readValue((ProfileImage.class.getClassLoader())));
-            instance.links = ((Links) in.readValue((Links.class.getClassLoader())));
-            return instance;
+            return new User(in);
         }
 
         public User[] newArray(int size) {
             return (new User[size]);
         }
 
-    }
-    ;
+    };
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+    protected User(Parcel in) {
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
+        this.updatedAt = ((String) in.readValue((String.class.getClassLoader())));
+        this.username = ((String) in.readValue((String.class.getClassLoader())));
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        this.firstName = ((String) in.readValue((String.class.getClassLoader())));
+        this.lastName = ((String) in.readValue((String.class.getClassLoader())));
+        this.instagramUsername = ((String) in.readValue((String.class.getClassLoader())));
+        this.twitterUsername = ((String) in.readValue((String.class.getClassLoader())));
+        this.portfolioUrl = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.bio = ((String) in.readValue((String.class.getClassLoader())));
+        this.location = ((String) in.readValue((String.class.getClassLoader())));
+        this.totalLikes = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.totalPhotos = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.totalCollections = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.followedByUser = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.followersCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.followingCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.downloads = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.profileImage = ((ProfileImage) in.readValue((ProfileImage.class.getClassLoader())));
+        this.badge = ((Badge) in.readValue((Badge.class.getClassLoader())));
+        this.links = ((Links) in.readValue((Links.class.getClassLoader())));
+    }
+
     public User() {
-    }
-
-    /**
-     * 
-     * @param id
-     * @param totalLikes
-     * @param username
-     * @param profileImage
-     * @param bio
-     * @param location
-     * @param portfolioUrl
-     * @param name
-     * @param totalPhotos
-     * @param links
-     * @param totalCollections
-     */
-    public User(String id, String username, String name, String portfolioUrl, String bio, String location, Integer totalLikes, Integer totalPhotos, Integer totalCollections, ProfileImage profileImage, Links links) {
-        super();
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.portfolioUrl = portfolioUrl;
-        this.bio = bio;
-        this.location = location;
-        this.totalLikes = totalLikes;
-        this.totalPhotos = totalPhotos;
-        this.totalCollections = totalCollections;
-        this.profileImage = profileImage;
-        this.links = links;
     }
 
     public String getId() {
@@ -116,9 +140,12 @@ public class User implements Parcelable
         this.id = id;
     }
 
-    public User withId(String id) {
-        this.id = id;
-        return this;
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getUsername() {
@@ -129,11 +156,6 @@ public class User implements Parcelable
         this.username = username;
     }
 
-    public User withUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
     public String getName() {
         return name;
     }
@@ -142,22 +164,44 @@ public class User implements Parcelable
         this.name = name;
     }
 
-    public User withName(String name) {
-        this.name = name;
-        return this;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getPortfolioUrl() {
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getInstagramUsername() {
+        return instagramUsername;
+    }
+
+    public void setInstagramUsername(String instagramUsername) {
+        this.instagramUsername = instagramUsername;
+    }
+
+    public String getTwitterUsername() {
+        return twitterUsername;
+    }
+
+    public void setTwitterUsername(String twitterUsername) {
+        this.twitterUsername = twitterUsername;
+    }
+
+    public Object getPortfolioUrl() {
         return portfolioUrl;
     }
 
-    public void setPortfolioUrl(String portfolioUrl) {
+    public void setPortfolioUrl(Object portfolioUrl) {
         this.portfolioUrl = portfolioUrl;
-    }
-
-    public User withPortfolioUrl(String portfolioUrl) {
-        this.portfolioUrl = portfolioUrl;
-        return this;
     }
 
     public String getBio() {
@@ -168,22 +212,12 @@ public class User implements Parcelable
         this.bio = bio;
     }
 
-    public User withBio(String bio) {
-        this.bio = bio;
-        return this;
-    }
-
     public String getLocation() {
         return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public User withLocation(String location) {
-        this.location = location;
-        return this;
     }
 
     public Integer getTotalLikes() {
@@ -194,22 +228,12 @@ public class User implements Parcelable
         this.totalLikes = totalLikes;
     }
 
-    public User withTotalLikes(Integer totalLikes) {
-        this.totalLikes = totalLikes;
-        return this;
-    }
-
     public Integer getTotalPhotos() {
         return totalPhotos;
     }
 
     public void setTotalPhotos(Integer totalPhotos) {
         this.totalPhotos = totalPhotos;
-    }
-
-    public User withTotalPhotos(Integer totalPhotos) {
-        this.totalPhotos = totalPhotos;
-        return this;
     }
 
     public Integer getTotalCollections() {
@@ -220,9 +244,36 @@ public class User implements Parcelable
         this.totalCollections = totalCollections;
     }
 
-    public User withTotalCollections(Integer totalCollections) {
-        this.totalCollections = totalCollections;
-        return this;
+    public Boolean getFollowedByUser() {
+        return followedByUser;
+    }
+
+    public void setFollowedByUser(Boolean followedByUser) {
+        this.followedByUser = followedByUser;
+    }
+
+    public Integer getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(Integer followersCount) {
+        this.followersCount = followersCount;
+    }
+
+    public Integer getFollowingCount() {
+        return followingCount;
+    }
+
+    public void setFollowingCount(Integer followingCount) {
+        this.followingCount = followingCount;
+    }
+
+    public Integer getDownloads() {
+        return downloads;
+    }
+
+    public void setDownloads(Integer downloads) {
+        this.downloads = downloads;
     }
 
     public ProfileImage getProfileImage() {
@@ -233,9 +284,12 @@ public class User implements Parcelable
         this.profileImage = profileImage;
     }
 
-    public User withProfileImage(ProfileImage profileImage) {
-        this.profileImage = profileImage;
-        return this;
+    public Badge getBadge() {
+        return badge;
+    }
+
+    public void setBadge(Badge badge) {
+        this.badge = badge;
     }
 
     public Links getLinks() {
@@ -246,27 +300,32 @@ public class User implements Parcelable
         this.links = links;
     }
 
-    public User withLinks(Links links) {
-        this.links = links;
-        return this;
-    }
-
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
+        dest.writeValue(updatedAt);
         dest.writeValue(username);
         dest.writeValue(name);
+        dest.writeValue(firstName);
+        dest.writeValue(lastName);
+        dest.writeValue(instagramUsername);
+        dest.writeValue(twitterUsername);
         dest.writeValue(portfolioUrl);
         dest.writeValue(bio);
         dest.writeValue(location);
         dest.writeValue(totalLikes);
         dest.writeValue(totalPhotos);
         dest.writeValue(totalCollections);
+        dest.writeValue(followedByUser);
+        dest.writeValue(followersCount);
+        dest.writeValue(followingCount);
+        dest.writeValue(downloads);
         dest.writeValue(profileImage);
+        dest.writeValue(badge);
         dest.writeValue(links);
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
 }

@@ -41,5 +41,8 @@ public interface PhotosEndpointInterface {
     Call<Download> getPhotoDownloadLink(@Path("id") String id);
 
     @GET("search/photos")
-    Call<SearchResults> searchPhotos(@Query("query") String query, @Query("page") Integer page, @Query("per_page") Integer perPage);
+    Call<SearchResults> searchPhotos(@Query("query") String query,
+                                     @Query("page") Integer page,
+                                     @Query("per_page") Integer perPage,
+                                     @Query("orientation") String orientation);
 }

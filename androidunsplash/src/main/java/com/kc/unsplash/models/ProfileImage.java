@@ -6,57 +6,40 @@ import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProfileImage implements Parcelable
-{
+public class ProfileImage implements Parcelable {
 
     @SerializedName("small")
     @Expose
     private String small;
+
     @SerializedName("medium")
     @Expose
     private String medium;
+
     @SerializedName("large")
     @Expose
     private String large;
+
     public final static Parcelable.Creator<ProfileImage> CREATOR = new Creator<ProfileImage>() {
 
-
-        @SuppressWarnings({
-            "unchecked"
-        })
+        @SuppressWarnings({"unchecked"})
         public ProfileImage createFromParcel(Parcel in) {
-            ProfileImage instance = new ProfileImage();
-            instance.small = ((String) in.readValue((String.class.getClassLoader())));
-            instance.medium = ((String) in.readValue((String.class.getClassLoader())));
-            instance.large = ((String) in.readValue((String.class.getClassLoader())));
-            return instance;
+            return new ProfileImage(in);
         }
 
         public ProfileImage[] newArray(int size) {
             return (new ProfileImage[size]);
         }
 
-    }
-    ;
+    };
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
+    protected ProfileImage(Parcel in) {
+        this.small = ((String) in.readValue((String.class.getClassLoader())));
+        this.medium = ((String) in.readValue((String.class.getClassLoader())));
+        this.large = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
     public ProfileImage() {
-    }
-
-    /**
-     * 
-     * @param small
-     * @param large
-     * @param medium
-     */
-    public ProfileImage(String small, String medium, String large) {
-        super();
-        this.small = small;
-        this.medium = medium;
-        this.large = large;
     }
 
     public String getSmall() {
@@ -67,22 +50,12 @@ public class ProfileImage implements Parcelable
         this.small = small;
     }
 
-    public ProfileImage withSmall(String small) {
-        this.small = small;
-        return this;
-    }
-
     public String getMedium() {
         return medium;
     }
 
     public void setMedium(String medium) {
         this.medium = medium;
-    }
-
-    public ProfileImage withMedium(String medium) {
-        this.medium = medium;
-        return this;
     }
 
     public String getLarge() {
@@ -93,11 +66,6 @@ public class ProfileImage implements Parcelable
         this.large = large;
     }
 
-    public ProfileImage withLarge(String large) {
-        this.large = large;
-        return this;
-    }
-
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(small);
         dest.writeValue(medium);
@@ -105,7 +73,7 @@ public class ProfileImage implements Parcelable
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
 }

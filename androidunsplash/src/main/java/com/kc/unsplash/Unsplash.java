@@ -26,17 +26,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Unsplash {
 
-    public static final String BASE_URL = "https://api.unsplash.com/";
+    private static final String BASE_URL = "https://api.unsplash.com/";
 
-    private String clientId;
+    public static final String ORIENTATION_PORTRAIT = "portrait";
+    public static final String ORIENTATION_LANDSCAPE = "landscape";
+    public static final String ORIENTATION_SQUARISH = "squarish";
+
     private PhotosEndpointInterface photosApiService;
     private CollectionsEndpointInterface collectionsApiService;
     private StatsEndpointInterface statsApiService;
     private String TAG = "Unsplash";
 
     public Unsplash(String clientId) {
-        this.clientId = clientId;
-
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HeaderInterceptor(clientId)).build();
 
@@ -56,6 +57,7 @@ public class Unsplash {
         call.enqueue(getMultiplePhotoCallback(listener));
     }
 
+    @Deprecated
     public void getCuratedPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener){
         Call<List<Photo>> call = photosApiService.getCuratedPhotos(page, perPage, order.getOrder());
         call.enqueue(getMultiplePhotoCallback(listener));
@@ -83,11 +85,11 @@ public class Unsplash {
     }
 
     public void searchPhotos(@NonNull String query, OnSearchCompleteListener listener){
-        searchPhotos(query, null, null, listener);
+        searchPhotos(query, null, null, null, listener);
     }
 
-    public void searchPhotos(@NonNull String query, @Nullable Integer page, @Nullable Integer perPage, OnSearchCompleteListener listener){
-        Call<SearchResults> call = photosApiService.searchPhotos(query, page, perPage);
+    public void searchPhotos(@NonNull String query, @Nullable Integer page, @Nullable Integer perPage, @Nullable String orientation, OnSearchCompleteListener listener){
+        Call<SearchResults> call = photosApiService.searchPhotos(query, page, perPage, orientation);
         call.enqueue(getSearchResultsCallback(listener));
     }
 
@@ -129,6 +131,7 @@ public class Unsplash {
         call.enqueue(getMultipleCollectionsCallback(listener));
     }
 
+    @Deprecated
     public void getCuratedCollections(Integer page, Integer perPage, final OnCollectionsLoadedListener listener){
         Call<List<Collection>> call = collectionsApiService.getCuratedCollections(page, perPage);
         call.enqueue(getMultipleCollectionsCallback(listener));
@@ -144,6 +147,7 @@ public class Unsplash {
         call.enqueue(getSingleCollectionCallback(listener));
     }
 
+    @Deprecated
     public void getCuratedCollection(String id, final OnCollectionLoadedListener listener){
         Call<Collection> call = collectionsApiService.getCuratedCollection(id);
         call.enqueue(getSingleCollectionCallback(listener));
@@ -154,6 +158,7 @@ public class Unsplash {
         call.enqueue(getMultiplePhotoCallback(listener));
     }
 
+    @Deprecated
     public void getCuratedCollectionPhotos(String id, Integer page, Integer perPage, final OnPhotosLoadedListener listener){
         Call<List<Photo>> call = collectionsApiService.getCuratedCollectionPhotos(id, page, perPage);
         call.enqueue(getMultiplePhotoCallback(listener));
