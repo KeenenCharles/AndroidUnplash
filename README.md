@@ -1,6 +1,14 @@
 # Android Unsplash (Unofficial)
 An unofficial Unsplash API library for Android
 
+## Gradle
+Add the line below to your build.gradle to use:
+~~~
+dependencies {
+    implementation 'com.kc.androidunsplash:androidunsplash:1.0.0'
+}
+~~~
+
 ## Usage
 
 ### Initialize Unsplash Client
@@ -73,14 +81,6 @@ getStats()
 ~~~~~
 
 Take a look at the API documentation for what each call does in detail <https://unsplash.com/documentation>
-
-## Gradle
-Add the line below to your build.gradle to use:
-~~~
-dependencies {
-    compile 'com.kc.androidunsplash:androidunsplash:0.2.1'
-}
-~~~
 
 ## Built With This Library
 + [Walldrobe](https://play.google.com/store/apps/details?id=walldrobe.coffecode.com)
