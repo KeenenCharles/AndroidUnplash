@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -42,7 +42,7 @@ ext {
     siteUrl = 'https://github.com/KeenenCharles/AndroidUnplash'
     gitUrl = 'https://github.com/KeenenCharles/AndroidUnplash.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'keenencharles'
     developerName = 'Keenen Charles'
