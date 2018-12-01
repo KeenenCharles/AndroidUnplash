@@ -1,3 +1,4 @@
+apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'com.android.library'
 
 android {
@@ -8,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -28,30 +29,17 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
 }
 
+publish {
+    def groupProjectID = 'com.kc.androidunsplash'
+    def artifactProjectID = 'androidunsplash'
+    def publishVersionID = '1.0.3'
 
-ext {
-    bintrayRepo = 'android-unsplash'
-    bintrayName = 'android-unsplash'
-
-    publishedGroupId = 'com.kc.androidunsplash'
-    libraryName = 'androidunsplash'
-    artifact = 'androidunsplash'
-
-    libraryDescription = 'An unofficial library to access the Unsplash API'
-
-    siteUrl = 'https://github.com/KeenenCharles/AndroidUnplash'
-    gitUrl = 'https://github.com/KeenenCharles/AndroidUnplash.git'
-
-    libraryVersion = '1.0.1'
-
-    developerId = 'keenencharles'
-    developerName = 'Keenen Charles'
-    developerEmail = 'keenencharles@gmail.com'
-
-    licenseName = 'MIT License'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["MIT"]
+    userOrg = 'keenencharles'
+    repoName = 'android-unsplash'
+    groupId = groupProjectID
+    artifactId = artifactProjectID
+    publishVersion = publishVersionID
+    uploadName = 'android-unsplash'
+    desc = 'An unofficial library to access the Unsplash API.'
+    website = 'https://github.com/KeenenCharles/AndroidUnplash'
 }
-
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
