@@ -85,6 +85,7 @@ Take a look at the API documentation for what each call does in detail <https://
 ## Built With This Library
 + [Walldrobe](https://play.google.com/store/apps/details?id=walldrobe.coffecode.com)
 + [Love Diary](https://play.google.com/store/apps/details?id=com.kilic.tweetydiary)
++ [Advice](https://play.google.com/store/apps/details?id=my.sustento.apeaceofadvice)
 
 # License
 ~~~
