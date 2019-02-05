@@ -15,7 +15,7 @@ public interface CollectionsEndpointInterface {
     @GET("collections")
     Call<List<Collection>> getCollections(@Query("page") Integer page, @Query("per_page") Integer perPage);
 
-    @GET("collections/features")
+    @GET("collections/featured")
     Call<List<Collection>> getFeaturedCollections(@Query("page") Integer page, @Query("per_page") Integer perPage);
 
     @GET("collections/curated")
