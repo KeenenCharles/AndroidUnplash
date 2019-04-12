@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Parcelable {
@@ -132,6 +133,8 @@ public class User implements Parcelable {
         this.profileImage = ((ProfileImage) in.readValue((ProfileImage.class.getClassLoader())));
         this.badge = ((Badge) in.readValue((Badge.class.getClassLoader())));
         this.links = ((Links) in.readValue((Links.class.getClassLoader())));
+        this.currentUserCollections = new ArrayList<>();
+        in.readTypedList(this.currentUserCollections, CurrentUserCollection.CREATOR);
     }
 
     public User() {
