@@ -32,7 +32,7 @@ dependencies {
 publish {
     def groupProjectID = 'com.kc.androidunsplash'
     def artifactProjectID = 'androidunsplash'
-    def publishVersionID = '1.0.4'
+    def publishVersionID = '1.0.5'
 
     userOrg = 'keenencharles'
     repoName = 'android-unsplash'
