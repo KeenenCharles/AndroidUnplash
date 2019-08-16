@@ -39,7 +39,10 @@ Once the user has been redirected to your app you can need to retrieve the `code
 unsplash.getToken(CLIENT_SECRET, "example://androidunsplash/callback", code, new Unsplash.OnTokenLoadedListener() { ... });
 ~~~~~
 
-Save the token you receive to authenticate user-related requests.
+Add the token you receive to your unsplash client to authenticate user-related requests.
+~~~~~
+unsplash.setToken(token.getAccessToken());
+~~~~~
 
 ### Get A List of Photos
 ~~~~~
