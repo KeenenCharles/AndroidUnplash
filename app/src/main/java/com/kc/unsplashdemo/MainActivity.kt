@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                         }
                 )
             }
-        }
+       }
     }
 
     private fun authorize() {

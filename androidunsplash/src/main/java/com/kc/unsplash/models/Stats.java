@@ -11,11 +11,12 @@ public class Stats implements Parcelable {
     @SerializedName("total_photos")
     @Expose
     private Integer totalPhotos;
+
     @SerializedName("photo_downloads")
     @Expose
     private Integer photoDownloads;
-    public final static Parcelable.Creator<Stats> CREATOR = new Creator<Stats>() {
 
+    public final static Parcelable.Creator<Stats> CREATOR = new Creator<Stats>() {
 
         @SuppressWarnings({
                 "unchecked"
@@ -31,8 +32,7 @@ public class Stats implements Parcelable {
             return (new Stats[size]);
         }
 
-    }
-            ;
+    };
 
     public Integer getTotalPhotos() {
         return totalPhotos;
