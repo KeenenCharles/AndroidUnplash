@@ -15,7 +15,31 @@ dependencies {
 ~~~~~
 Unsplash unsplash = new Unsplash(YOUR_CLIENT_ID);
 ~~~~~
-You can sign up for a Client Id at <https://unsplash.com/developers>
+You can create an app for your project at <https://unsplash.com/developers>
+You'll receive a Client ID and a Client Secret
+
+### User Authentication
+Unsplash uses OAuth2 for user authentication.
+
+You can call the `authorize()` method to start the process with the scopes you require access to. Ensure those scopes have been turned on in the Unsplash project dashboard.
+
+~~~~~
+List<Scope> scopes = new ArrayList<>();
+scopes.add(Scope.PUBLIC);
+scopes.add(Scope.READ_USER);
+scopes.add(Scope.WRITE_USER);
+unsplash.authorize(MainActivity.this, "example://androidunsplash/callback", scopes);
+~~~~~
+
+If your app is mobile only you can create a `redirectURI` by [defining a URI scheme](https://developer.android.com/training/app-links/deep-linking) in your Manifest 
+
+Once the user has been redirected to your app you can need to retrieve the `code` parameter provided in the Intent and call the `getToken()` method.
+
+~~~~~
+unsplash.getToken(CLIENT_SECRET, "example://androidunsplash/callback", code, new Unsplash.OnTokenLoadedListener() { ... });
+~~~~~
+
+Save the token you receive to authenticate user-related requests.
 
 ### Get A List of Photos
 ~~~~~
