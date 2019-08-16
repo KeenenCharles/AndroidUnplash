@@ -1,27 +1,21 @@
 package com.kc.unsplash
 
-import androidx.browser.customtabs.CustomTabsIntent
-
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-
+import androidx.browser.customtabs.CustomTabsIntent
+import com.kc.unsplash.api.API
+import com.kc.unsplash.api.Order
 import com.kc.unsplash.api.Scope
 import com.kc.unsplash.api.endpoints.AuthEndpointInterface
 import com.kc.unsplash.api.endpoints.CollectionsEndpointInterface
-import com.kc.unsplash.api.endpoints.StatsEndpointInterface
-import com.kc.unsplash.api.HeaderInterceptor
-import com.kc.unsplash.api.Order
 import com.kc.unsplash.api.endpoints.PhotosEndpointInterface
+import com.kc.unsplash.api.endpoints.StatsEndpointInterface
 import com.kc.unsplash.models.*
 import com.kc.unsplash.models.Collection
-
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class Unsplash(clientId: String) {
 
@@ -32,6 +26,7 @@ class Unsplash(clientId: String) {
 
     private var mClientID = ""
     private var mToken: String? = null
+    private lateinit var API: API
 
     private val TAG = "Unsplash"
 
@@ -41,21 +36,11 @@ class Unsplash(clientId: String) {
     }
 
     private fun createServices(clientId: String, token: String?) {
-        val headerInterceptor = HeaderInterceptor(clientId, token)
-
-        val client = OkHttpClient.Builder()
-                .addInterceptor(headerInterceptor).build()
-
-        val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-        photosApiService = retrofit.create(PhotosEndpointInterface::class.java)
-        collectionsApiService = retrofit.create(CollectionsEndpointInterface::class.java)
-        statsApiService = retrofit.create(StatsEndpointInterface::class.java)
-        authApiService = retrofit.create(AuthEndpointInterface::class.java)
+        API = API(clientId, null)
+        photosApiService = API.retrofit.create(PhotosEndpointInterface::class.java)
+        collectionsApiService = API.retrofit.create(CollectionsEndpointInterface::class.java)
+        statsApiService = API.retrofit.create(StatsEndpointInterface::class.java)
+        authApiService = API.retrofit.create(AuthEndpointInterface::class.java)
     }
 
     fun authorize(context: Context, redirectURI: String, scopeList: List<Scope>) {
@@ -344,12 +329,4 @@ class Unsplash(clientId: String) {
         fun onError(error: String)
     }
 
-    companion object {
-
-        private val BASE_URL = "https://api.unsplash.com/"
-
-        val ORIENTATION_PORTRAIT = "portrait"
-        val ORIENTATION_LANDSCAPE = "landscape"
-        val ORIENTATION_SQUARISH = "squarish"
-    }
 }
