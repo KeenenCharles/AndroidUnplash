@@ -2,9 +2,14 @@ package com.kc.unsplash;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsIntent;
 
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
+import com.kc.unsplash.api.Scope;
+import com.kc.unsplash.api.endpoints.AuthEndpointInterface;
 import com.kc.unsplash.api.endpoints.CollectionsEndpointInterface;
 import com.kc.unsplash.api.endpoints.StatsEndpointInterface;
 import com.kc.unsplash.models.Collection;
@@ -15,6 +20,7 @@ import com.kc.unsplash.api.Order;
 import com.kc.unsplash.api.endpoints.PhotosEndpointInterface;
 import com.kc.unsplash.models.SearchResults;
 import com.kc.unsplash.models.Stats;
+import com.kc.unsplash.models.Token;
 
 import java.util.List;
 
@@ -36,9 +42,14 @@ public class Unsplash {
     private PhotosEndpointInterface photosApiService;
     private CollectionsEndpointInterface collectionsApiService;
     private StatsEndpointInterface statsApiService;
+    private AuthEndpointInterface authApiService;
+
+    private String mClientID = "";
+
     private String TAG = "Unsplash";
 
     public Unsplash(String clientId) {
+        mClientID = clientId;
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HeaderInterceptor(clientId)).build();
 
@@ -51,6 +62,26 @@ public class Unsplash {
         photosApiService = retrofit.create(PhotosEndpointInterface.class);
         collectionsApiService = retrofit.create(CollectionsEndpointInterface.class);
         statsApiService = retrofit.create(StatsEndpointInterface.class);
+        authApiService = retrofit.create(AuthEndpointInterface.class);
+    }
+
+    public void authorize(Context context, String redirectURI, List<Scope> scopeList) {
+        StringBuilder scopes = new StringBuilder();
+        for(Scope scope : scopeList) {
+            scopes.append(scope.getScope()).append("+");
+        }
+
+        scopes = scopes.deleteCharAt(scopes.length() - 1);
+
+        String url = "https://unsplash.com/oauth/authorize?client_id=" + mClientID + "&redirect_uri=" + redirectURI + "&response_type=code&scope=" + scopes;
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(context, Uri.parse(url));
+    }
+
+    public void getToken(String clientSecret, String redirectURI, String code, final OnTokenLoadedListener listener) {
+        Call<Token> call = authApiService.getToken("https://unsplash.com/oauth/token", mClientID, clientSecret, redirectURI, code, "authorization_code");
+        call.enqueue(getTokenCallback(listener));
     }
 
     public void getPhotos(Integer page, Integer perPage, Order order, final OnPhotosLoadedListener listener) {
@@ -247,6 +278,20 @@ public class Unsplash {
         };
     }
 
+    private Callback<Token> getTokenCallback(final OnTokenLoadedListener listener) {
+        return new UnsplashCallback<Token>() {
+            @Override
+            void onComplete(Token response) {
+                listener.onComplete(response);
+            }
+
+            @Override
+            void onError(Call<Token> call, String message) {
+                listener.onError(message);
+            }
+        };
+    }
+
     private abstract class UnsplashCallback<T> implements Callback<T> {
 
         abstract void onComplete(T response);
@@ -313,6 +358,12 @@ public class Unsplash {
 
     public interface OnStatsLoadedListener {
         void onComplete(Stats stats);
+
+        void onError(String error);
+    }
+
+    public interface OnTokenLoadedListener {
+        void onComplete(Token token);
 
         void onError(String error);
     }
