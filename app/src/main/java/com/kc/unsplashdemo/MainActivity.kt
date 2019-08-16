@@ -11,9 +11,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.kc.unsplash.Unsplash
 import com.kc.unsplash.api.Order
 import com.kc.unsplash.api.Scope
-import com.kc.unsplash.models.Photo
-import com.kc.unsplash.models.SearchResults
-import com.kc.unsplash.models.Token
 import com.kc.unsplashdemo.databinding.ActivityMainBinding
 import java.util.*
 
@@ -24,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private val redirectURI = "example://androidunsplash/callback"
 
-    private var unsplash: Unsplash? = null
+    private lateinit var unsplash: Unsplash
 
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var adapter: PhotoAdapter
@@ -40,15 +37,7 @@ class MainActivity : AppCompatActivity() {
         adapter = PhotoAdapter {}
         mBinding.recyclerView.adapter = adapter
 
-        unsplash!!.getPhotos(1, 10, Order.LATEST, object : Unsplash.OnPhotosLoadedListener {
-            override fun onComplete(photos: List<Photo>) {
-                adapter.updateList(photos)
-            }
-
-            override fun onError(error: String) {
-
-            }
-        })
+        unsplash.photos.getPhotos(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
 
         mBinding.searchButton.setOnClickListener {
             search()
@@ -63,16 +52,15 @@ class MainActivity : AppCompatActivity() {
             if (data != null && data.query != null) {
                 val code = data.query!!.replace("code=", "")
 
-                unsplash!!.getToken(CLIENT_SECRET, redirectURI, code, object : Unsplash.OnTokenLoadedListener {
-                    override fun onComplete(token: Token) {
-                        Log.d("Token", token.accessToken)
-                        unsplash!!.setToken(token.accessToken)
-                    }
-
-                    override fun onError(error: String) {
-
-                    }
-                })
+                unsplash.getToken(CLIENT_SECRET, redirectURI, code,
+                        {
+                            Log.d("Token", it.accessToken)
+                            unsplash.setToken(it.accessToken)
+                        },
+                        {
+                            Log.d("Token", it)
+                        }
+                )
             }
         }
     }
@@ -82,23 +70,21 @@ class MainActivity : AppCompatActivity() {
         scopes.add(Scope.PUBLIC)
         scopes.add(Scope.READ_USER)
         scopes.add(Scope.WRITE_USER)
-        unsplash!!.authorize(this@MainActivity, redirectURI, scopes)
+        unsplash.authorize(this@MainActivity, redirectURI, scopes)
     }
 
     private fun search() {
         val query = mBinding.editText.text.toString()
 
-        unsplash!!.searchPhotos(query, listener = object : Unsplash.OnSearchCompleteListener {
-            override fun onComplete(results: SearchResults) {
-                Log.d("Photos", "Total Results Found " + results.total!!)
-                val photos = results.results
+        unsplash.photos.searchPhotos(query,
+            onComplete = {
+                Log.d("Photos", "Total Results Found " + it.total!!)
+                val photos = it.results
                 adapter.updateList(photos)
+            }, onError = {
+                Log.d("Unsplash", it)
             }
-
-            override fun onError(error: String) {
-                Log.d("Unsplash", error)
-            }
-        })
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
