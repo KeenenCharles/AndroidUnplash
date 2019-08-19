@@ -6,17 +6,15 @@ import androidx.browser.customtabs.CustomTabsIntent
 import com.kc.unsplash.api.API
 import com.kc.unsplash.api.Scope
 import com.kc.unsplash.api.UnsplashCallback
-import com.kc.unsplash.api.endpoints.AuthEndpointInterface
-import com.kc.unsplash.api.endpoints.CollectionsEndpointInterface
-import com.kc.unsplash.api.endpoints.PhotosEndpointInterface
-import com.kc.unsplash.api.endpoints.StatsEndpointInterface
+import com.kc.unsplash.api.endpoints.*
 import com.kc.unsplash.models.Stats
 import com.kc.unsplash.models.Token
 
-class Unsplash(clientId: String) {
+class Unsplash(clientId: String, token: String? = null) {
 
     lateinit var photos: PhotoAPI
     lateinit var collections: CollectionAPI
+    lateinit var users: UserAPI
 
     private lateinit var statsApiService: StatsEndpointInterface
     private lateinit var authApiService: AuthEndpointInterface
@@ -29,6 +27,7 @@ class Unsplash(clientId: String) {
 
     init {
         mClientID = clientId
+        mToken = token
         createServices(clientId, null)
     }
 
@@ -36,6 +35,7 @@ class Unsplash(clientId: String) {
         API = API(clientId, null)
         photos = PhotoAPI(API.retrofit.create(PhotosEndpointInterface::class.java))
         collections = CollectionAPI(API.retrofit.create(CollectionsEndpointInterface::class.java))
+        users = UserAPI(API.retrofit.create(UserEndpointInterface::class.java))
 
         statsApiService = API.retrofit.create(StatsEndpointInterface::class.java)
         authApiService = API.retrofit.create(AuthEndpointInterface::class.java)

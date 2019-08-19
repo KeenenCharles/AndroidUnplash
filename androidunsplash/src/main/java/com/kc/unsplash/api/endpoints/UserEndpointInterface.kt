@@ -1,9 +1,7 @@
 package com.kc.unsplash.api.endpoints
 
-import com.kc.unsplash.models.Photo
-import com.kc.unsplash.models.Portfolio
-import com.kc.unsplash.models.Token
-import com.kc.unsplash.models.User
+import com.kc.unsplash.models.*
+import com.kc.unsplash.models.Collection
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -46,10 +44,10 @@ interface UserEndpointInterface {
                       @Query("order_by") orderBy: String,
                       @Query("stats") stats: Boolean?,
                       @Query("resolution") resolution: String?,
-                      @Query("quantity") quantity: Int?): Call<List<Photo>>
+                      @Query("quantity") quantity: Int?):Call<List<Collection>>
 
     @GET("users/{username}/statistics")
     fun getUserStatistics(@Path("username") username: String,
                            @Query("resolution") resolution: String?,
-                           @Query("quantity") quantity: Int?): Call<List<Photo>>
+                           @Query("quantity") quantity: Int?): Call<Stats>
 }

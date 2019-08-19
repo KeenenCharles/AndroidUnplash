@@ -1,5 +1,7 @@
 package com.kc.unsplashdemo
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -25,28 +27,31 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var adapter: PhotoAdapter
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        unsplash = Unsplash(CLIENT_ID)
-
         mBinding.recyclerView.layoutManager = GridLayoutManager(this@MainActivity, 2)
-
         adapter = PhotoAdapter {}
         mBinding.recyclerView.adapter = adapter
-
-        unsplash.photos.getPhotos(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
 
         mBinding.searchButton.setOnClickListener {
             search()
         }
 
-        authCallback()
+        sharedPref = getPreferences(Context.MODE_PRIVATE)
+
+        val token = sharedPref.getString("TOKEN", null)
+        unsplash = Unsplash(CLIENT_ID, token)
+
+        unsplash.photos.getPhotos(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
+
+        handleAuthCallback()
     }
 
-    private fun authCallback() {
+    private fun handleAuthCallback() {
        intent?.let {
             val data = intent.data
             if (data != null && data.query != null) {
@@ -56,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                         {
                             Log.d("Token", it.accessToken)
                             unsplash.setToken(it.accessToken)
+                            sharedPref.edit().putString("TOKEN", it.accessToken).apply()
                         },
                         {
                             Log.d("Token", it)
@@ -81,7 +87,8 @@ class MainActivity : AppCompatActivity() {
                 Log.d("Photos", "Total Results Found " + it.total!!)
                 val photos = it.results
                 adapter.updateList(photos)
-            }, onError = {
+            },
+            onError = {
                 Log.d("Unsplash", it)
             }
         )
