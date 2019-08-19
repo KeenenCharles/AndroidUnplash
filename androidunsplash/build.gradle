@@ -11,7 +11,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
-        versionName "1.1.0"
+        versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -41,7 +41,7 @@ dependencies {
 publish {
     def groupProjectID = 'com.kc.androidunsplash'
     def artifactProjectID = 'androidunsplash'
-    def publishVersionID = '1.0.5'
+    def publishVersionID = '2.0.0'
 
     userOrg = 'keenencharles'
     repoName = 'android-unsplash'

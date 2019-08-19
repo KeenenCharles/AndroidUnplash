@@ -32,7 +32,7 @@ class Unsplash(clientId: String, token: String? = null) {
     }
 
     private fun createServices(clientId: String, token: String?) {
-        API = API(clientId, null)
+        API = API(clientId, token)
         photos = PhotoAPI(API.retrofit.create(PhotosEndpointInterface::class.java))
         collections = CollectionAPI(API.retrofit.create(CollectionsEndpointInterface::class.java))
         users = UserAPI(API.retrofit.create(UserEndpointInterface::class.java))
