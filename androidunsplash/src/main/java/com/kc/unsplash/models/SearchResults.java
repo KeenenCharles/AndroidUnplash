@@ -8,38 +8,20 @@ import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SearchResults implements Parcelable
+public class SearchResults<T>
 {
 
     @SerializedName("total")
     @Expose
     private Integer total;
+
     @SerializedName("total_pages")
     @Expose
     private Integer totalPages;
+
     @SerializedName("results")
     @Expose
-    private List<Photo> results = null;
-    public final static Parcelable.Creator<SearchResults> CREATOR = new Creator<SearchResults>() {
-
-
-        @SuppressWarnings({
-            "unchecked"
-        })
-        public SearchResults createFromParcel(Parcel in) {
-            SearchResults instance = new SearchResults();
-            instance.total = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.totalPages = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.results, (Photo.class.getClassLoader()));
-            return instance;
-        }
-
-        public SearchResults[] newArray(int size) {
-            return (new SearchResults[size]);
-        }
-
-    }
-    ;
+    private List<T> results = null;
 
     public Integer getTotal() {
         return total;
@@ -57,22 +39,12 @@ public class SearchResults implements Parcelable
         this.totalPages = totalPages;
     }
 
-    public List<Photo> getResults() {
+    public List<T> getResults() {
         return results;
     }
 
-    public void setResults(List<Photo> results) {
+    public void setResults(List<T> results) {
         this.results = results;
-    }
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(total);
-        dest.writeValue(totalPages);
-        dest.writeList(results);
-    }
-
-    public int describeContents() {
-        return  0;
     }
 
 }

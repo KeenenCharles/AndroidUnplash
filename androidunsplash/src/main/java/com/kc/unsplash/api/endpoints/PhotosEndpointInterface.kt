@@ -4,9 +4,7 @@ import com.kc.unsplash.models.Download
 import com.kc.unsplash.models.Photo
 import com.kc.unsplash.models.SearchResults
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface PhotosEndpointInterface {
 
@@ -51,5 +49,26 @@ interface PhotosEndpointInterface {
     fun searchPhotos(@Query("query") query: String,
                      @Query("page") page: Int,
                      @Query("per_page") perPage: Int,
-                     @Query("orientation") orientation: String?): Call<SearchResults>
+                     @Query("orientation") orientation: String?): Call<SearchResults<Photo>>
+
+    @PUT("photos/{id}")
+    fun updatePhoto(@Path("id") id: String,
+                    @Query("location[latitude]") latitude: String? = null,
+                    @Query("location[longitude]") longitude: String? = null,
+                    @Query("location[name]") name: String? = null,
+                    @Query("location[city]") city: String? = null,
+                    @Query("location[country]") country: String? = null,
+                    @Query("location[confidential]") confidential: String? = null,
+                    @Query("exif[make]") make: String? = null,
+                    @Query("exif[model]") model: String? = null,
+                    @Query("exif[exposure_time]") exposureTime: String? = null,
+                    @Query("exif[exposure_value]") exposureValue: String? = null,
+                    @Query("exif[focal_length]") focalLength: String? = null,
+                    @Query("exif[iso_speed_ratings]") iso: String? = null): Call<Photo>
+
+    @PUT("photos/{id}/like")
+    fun likePhoto(@Path("id") id: String): Call<Photo>
+
+    @DELETE("photos/{id}/like")
+    fun unlikePhoto(@Path("id") id: String): Call<Photo>
 }

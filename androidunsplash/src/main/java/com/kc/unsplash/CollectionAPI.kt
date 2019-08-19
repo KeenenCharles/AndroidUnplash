@@ -4,6 +4,7 @@ import com.kc.unsplash.api.UnsplashCallback
 import com.kc.unsplash.api.endpoints.CollectionsEndpointInterface
 import com.kc.unsplash.models.Collection
 import com.kc.unsplash.models.Photo
+import com.kc.unsplash.models.SearchResults
 
 class CollectionAPI(private var collectionsApiService: CollectionsEndpointInterface) {
 
@@ -12,6 +13,15 @@ class CollectionAPI(private var collectionsApiService: CollectionsEndpointInterf
                        onComplete: (List<Collection>) -> Unit,
                        onError: (String) -> Unit) {
         val call = collectionsApiService.getCollections(page, perPage)
+        call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    fun searchCollections(query: String,
+                        page: Int = 1,
+                        perPage: Int = 10,
+                        onComplete: (SearchResults<Collection>) -> Unit,
+                        onError: (String) -> Unit) {
+        val call = collectionsApiService.searchCollections(query, page, perPage)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 

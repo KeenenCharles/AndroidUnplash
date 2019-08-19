@@ -80,5 +80,13 @@ class UserAPI(private var userApiService: UserEndpointInterface) {
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
+    fun searchUsers(query: String,
+                    page: Int = 1,
+                    perPage: Int = 10,
+                    onComplete: (SearchResults<User>) -> Unit,
+                    onError: (String) -> Unit) {
+        val call = userApiService.searchUsers(query, page, perPage)
+        call.enqueue(UnsplashCallback(onComplete, onError))
+    }
 
 }

@@ -50,4 +50,9 @@ interface UserEndpointInterface {
     fun getUserStatistics(@Path("username") username: String,
                            @Query("resolution") resolution: String?,
                            @Query("quantity") quantity: Int?): Call<Stats>
+
+    @GET("search/users")
+    fun searchUsers(@Query("query") query: String,
+                     @Query("page") page: Int,
+                     @Query("per_page") perPage: Int): Call<SearchResults<User>>
 }
