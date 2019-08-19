@@ -69,36 +69,36 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun updatePhoto(id: String,
-                    latitude: String? = null,
-                    longitude: String? = null,
-                    name: String? = null,
-                    city: String? = null,
-                    country: String? = null,
-                    confidential: String? = null,
-                    make: String? = null,
-                    model: String? = null,
-                    exposure_time: String? = null,
-                    exposure_value: String? = null,
-                    focal_length: String? = null,
-                    iso: String? = null,
-                    onComplete: (Photo) -> Unit,
-                    onError: (String) -> Unit) {
+    fun update(id: String,
+               latitude: String? = null,
+               longitude: String? = null,
+               name: String? = null,
+               city: String? = null,
+               country: String? = null,
+               confidential: String? = null,
+               make: String? = null,
+               model: String? = null,
+               exposure_time: String? = null,
+               exposure_value: String? = null,
+               focal_length: String? = null,
+               iso: String? = null,
+               onComplete: (Photo) -> Unit,
+               onError: (String) -> Unit) {
         val call = photosApiService.updatePhoto(id, latitude, longitude, name, city,
                 country, confidential, make, model, exposure_time, exposure_value, focal_length, iso)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun likePhoto(id: String,
-                  onComplete: (Photo) -> Unit,
-                  onError: (String) -> Unit) {
+    fun like(id: String,
+             onComplete: (Photo) -> Unit,
+             onError: (String) -> Unit) {
         val call = photosApiService.likePhoto(id)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun unlikePhoto(id: String,
-                  onComplete: (Photo) -> Unit,
-                  onError: (String) -> Unit) {
+    fun unlike(id: String,
+               onComplete: (Photo) -> Unit,
+               onError: (String) -> Unit) {
         val call = photosApiService.unlikePhoto(id)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }

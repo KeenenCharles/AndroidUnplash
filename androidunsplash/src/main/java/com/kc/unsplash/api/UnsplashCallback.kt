@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UnsplashCallback<T>(private var onComplete: (T) -> Unit,private var  onError: (String) -> Unit) : Callback<T> {
+class UnsplashCallback<T>(private var onComplete: (T) -> Unit, private var  onError: (String) -> Unit) : Callback<T> {
 
     private val TAG = "AndroidUnsplash"
 

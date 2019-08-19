@@ -4,9 +4,7 @@ import com.kc.unsplash.models.Photo
 import com.kc.unsplash.models.Collection
 import com.kc.unsplash.models.SearchResults
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface CollectionsEndpointInterface {
 
@@ -42,7 +40,29 @@ interface CollectionsEndpointInterface {
     fun getRelatedCollections(@Path("id") id: String): Call<List<Collection>>
 
     @GET("search/collections")
-    fun searchCollections(@Query("query") query: String,
-                     @Query("page") page: Int,
-                     @Query("per_page") perPage: Int): Call<SearchResults<Collection>>
+    fun search(@Query("query") query: String,
+               @Query("page") page: Int,
+               @Query("per_page") perPage: Int): Call<SearchResults<Collection>>
+
+    @POST("collections")
+    fun create(@Query("title") query: String,
+               @Query("description") page: String?,
+               @Query("private") private: Boolean?): Call<Collection>
+
+    @PUT("collections/{id}")
+    fun update(@Path("id") id: String,
+               @Query("title") query: String?,
+               @Query("description") page: String?,
+               @Query("private") private: Boolean?): Call<Collection>
+
+    @DELETE("collections/{id}")
+    fun delete(@Path("id") id: String): Call<Collection>
+
+    @POST("collections/{id}/add")
+    fun addPhoto(@Query("collection_id") collectionId: String,
+                 @Query("photo_id") page: String?): Call<Collection>
+
+    @DELETE("collections/{id}/add")
+    fun removePhoto(@Query("collection_id") collectionId: String,
+                    @Query("photo_id") page: String?): Call<Collection>
 }
