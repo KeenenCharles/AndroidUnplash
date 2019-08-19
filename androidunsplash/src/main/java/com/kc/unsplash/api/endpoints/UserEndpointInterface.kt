@@ -11,48 +11,48 @@ import retrofit2.http.Query
 interface UserEndpointInterface {
 
     @GET("me")
-    fun getCurrentUser(): Call<User>
+    fun getCurrent(): Call<User>
 
     @PUT("me")
-    fun updateCurrentUser(user: User): Call<User>
+    fun updateCurrent(user: User): Call<User>
 
     @GET("users/{username}")
-    fun getUser(@Path("username") username: String): Call<User>
+    fun getByUsername(@Path("username") username: String): Call<User>
 
     @GET("users/{username}/portfolio")
-    fun getUserPortfolio(@Path("username") username: String): Call<Portfolio>
+    fun getPortfolio(@Path("username") username: String): Call<Portfolio>
 
     @GET("users/{username}/photos")
-    fun getUserPhotos(@Path("username") username: String,
-                      @Query("page") page: Int?,
-                      @Query("per_page") perPage: Int?,
-                      @Query("order_by") orderBy: String,
-                      @Query("stats") stats: Boolean?,
-                      @Query("resolution") resolution: String?,
-                      @Query("quantity") quantity: Int?): Call<List<Photo>>
+    fun getPhotos(@Path("username") username: String,
+                  @Query("page") page: Int?,
+                  @Query("per_page") perPage: Int?,
+                  @Query("order_by") orderBy: String?,
+                  @Query("stats") stats: Boolean?,
+                  @Query("resolution") resolution: String?,
+                  @Query("quantity") quantity: Int?): Call<List<Photo>>
 
     @GET("users/{username}/likes")
-    fun getUserLikedPhotos(@Path("username") username: String,
-                          @Query("page") page: Int?,
-                          @Query("per_page") perPage: Int?,
-                          @Query("order_by") orderBy: String): Call<List<Photo>>
+    fun getLikedPhotos(@Path("username") username: String,
+                       @Query("page") page: Int?,
+                       @Query("per_page") perPage: Int?,
+                       @Query("order_by") orderBy: String?): Call<List<Photo>>
 
     @GET("users/{username}/collections")
-    fun getUserCollections(@Path("username") username: String,
-                      @Query("page") page: Int?,
-                      @Query("per_page") perPage: Int?,
-                      @Query("order_by") orderBy: String,
-                      @Query("stats") stats: Boolean?,
-                      @Query("resolution") resolution: String?,
-                      @Query("quantity") quantity: Int?):Call<List<Collection>>
+    fun getCollections(@Path("username") username: String,
+                       @Query("page") page: Int?,
+                       @Query("per_page") perPage: Int?,
+                       @Query("order_by") orderBy: String?,
+                       @Query("stats") stats: Boolean?,
+                       @Query("resolution") resolution: String?,
+                       @Query("quantity") quantity: Int?):Call<List<Collection>>
 
     @GET("users/{username}/statistics")
-    fun getUserStatistics(@Path("username") username: String,
-                           @Query("resolution") resolution: String?,
-                           @Query("quantity") quantity: Int?): Call<Stats>
+    fun getStatistics(@Path("username") username: String,
+                      @Query("resolution") resolution: String?,
+                      @Query("quantity") quantity: Int?): Call<Stats>
 
     @GET("search/users")
-    fun searchUsers(@Query("query") query: String,
-                     @Query("page") page: Int,
-                     @Query("per_page") perPage: Int): Call<SearchResults<User>>
+    fun search(@Query("query") query: String,
+               @Query("page") page: Int?,
+               @Query("per_page") perPage: Int?): Call<SearchResults<User>>
 }

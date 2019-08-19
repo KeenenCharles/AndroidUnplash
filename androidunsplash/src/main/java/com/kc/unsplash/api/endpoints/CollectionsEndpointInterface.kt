@@ -9,40 +9,28 @@ import retrofit2.http.*
 interface CollectionsEndpointInterface {
 
     @GET("collections")
-    fun getCollections(@Query("page") page: Int?,
-                       @Query("per_page") perPage: Int?): Call<List<Collection>>
+    fun get(@Query("page") page: Int?,
+            @Query("per_page") perPage: Int?): Call<List<Collection>>
 
     @GET("collections/featured")
-    fun getFeaturedCollections(@Query("page") page: Int?,
-                               @Query("per_page") perPage: Int?): Call<List<Collection>>
-
-    @GET("collections/curated")
-    fun getCuratedCollections(@Query("page") page: Int?,
-                              @Query("per_page") perPage: Int?): Call<List<Collection>>
+    fun getFeatured(@Query("page") page: Int?,
+                    @Query("per_page") perPage: Int?): Call<List<Collection>>
 
     @GET("collections/{id}")
-    fun getCollection(@Path("id") id: String): Call<Collection>
-
-    @GET("collections/curated/{id}")
-    fun getCuratedCollection(@Path("id") id: String): Call<Collection>
+    fun getById(@Path("id") id: String): Call<Collection>
 
     @GET("collections/{id}/photos")
-    fun getCollectionPhotos(@Path("id") id: String,
-                            @Query("page") page: Int?,
-                            @Query("per_page") perPage: Int?): Call<List<Photo>>
-
-    @GET("collections/curated/{id}/photos")
-    fun getCuratedCollectionPhotos(@Path("id") id: String,
-                                   @Query("page") page: Int?,
-                                   @Query("per_page") perPage: Int?): Call<List<Photo>>
+    fun getPhotos(@Path("id") id: String,
+                  @Query("page") page: Int?,
+                  @Query("per_page") perPage: Int?): Call<List<Photo>>
 
     @GET("collections/{id}/related")
-    fun getRelatedCollections(@Path("id") id: String): Call<List<Collection>>
+    fun getRelated(@Path("id") id: String): Call<List<Collection>>
 
     @GET("search/collections")
     fun search(@Query("query") query: String,
-               @Query("page") page: Int,
-               @Query("per_page") perPage: Int): Call<SearchResults<Collection>>
+               @Query("page") page: Int?,
+               @Query("per_page") perPage: Int?): Call<SearchResults<Collection>>
 
     @POST("collections")
     fun create(@Query("title") query: String,

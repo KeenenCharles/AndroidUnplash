@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         val token = sharedPref.getString("TOKEN", null)
         unsplash = Unsplash(CLIENT_ID, token)
 
-        unsplash.photos.getPhotos(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
+        unsplash.photos.get(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
 
         handleAuthCallback()
     }
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     private fun search() {
         val query = mBinding.editText.text.toString()
 
-        unsplash.photos.searchPhotos(query,
+        unsplash.photos.search(query,
             onComplete = {
                 Log.d("Photos", "Total Results Found " + it.total!!)
                 val photos = it.results

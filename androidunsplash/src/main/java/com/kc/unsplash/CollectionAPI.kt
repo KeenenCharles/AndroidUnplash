@@ -8,96 +8,69 @@ import com.kc.unsplash.models.SearchResults
 
 class CollectionAPI(private var collectionsApiService: CollectionsEndpointInterface) {
 
-    fun getCollections(page: Int?,
-                       perPage: Int?,
-                       onComplete: (List<Collection>) -> Unit,
-                       onError: (String) -> Unit) {
-        val call = collectionsApiService.getCollections(page, perPage)
+    fun get(page: Int? = null,
+            perPage: Int? = null,
+            onComplete: (List<Collection>) -> Unit,
+            onError: (String) -> Unit) {
+        val call = collectionsApiService.get(page, perPage)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun searchCollections(query: String,
-                        page: Int = 1,
-                        perPage: Int = 10,
-                        onComplete: (SearchResults<Collection>) -> Unit,
-                        onError: (String) -> Unit) {
+    fun search(query: String,
+               page: Int? = null,
+               perPage: Int? = null,
+               onComplete: (SearchResults<Collection>) -> Unit,
+               onError: (String) -> Unit) {
         val call = collectionsApiService.search(query, page, perPage)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun getFeaturedCollections(page: Int?,
-                               perPage: Int?,
-                               onComplete: (List<Collection>) -> Unit,
-                               onError: (String) -> Unit) {
-        val call = collectionsApiService.getFeaturedCollections(page, perPage)
+    fun getFeatured(page: Int? = null,
+                    perPage: Int? = null,
+                    onComplete: (List<Collection>) -> Unit,
+                    onError: (String) -> Unit) {
+        val call = collectionsApiService.getFeatured(page, perPage)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    @Deprecated("")
-    fun getCuratedCollections(page: Int?,
-                              perPage: Int?,
-                              onComplete: (List<Collection>) -> Unit,
-                              onError: (String) -> Unit) {
-        val call = collectionsApiService.getCuratedCollections(page, perPage)
+    fun getRelated(id: String,
+                   onComplete: (List<Collection>) -> Unit,
+                   onError: (String) -> Unit) {
+        val call = collectionsApiService.getRelated(id)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun getRelatedCollections(id: String,
-                              onComplete: (List<Collection>) -> Unit,
-                              onError: (String) -> Unit) {
-        val call = collectionsApiService.getRelatedCollections(id)
+    fun getById(id: String,
+                onComplete: (Collection) -> Unit,
+                onError: (String) -> Unit) {
+        val call = collectionsApiService.getById(id)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun getCollection(id: String,
-                      onComplete: (Collection) -> Unit,
-                      onError: (String) -> Unit) {
-        val call = collectionsApiService.getCollection(id)
+    fun getPhotos(id: String,
+                  page: Int? = null,
+                  perPage: Int? = null,
+                  onComplete: (List<Photo>) -> Unit,
+                  onError: (String) -> Unit) {
+        val call = collectionsApiService.getPhotos(id, page, perPage)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    @Deprecated("")
-    fun getCuratedCollection(id: String,
-                             onComplete: (Collection) -> Unit,
-                             onError: (String) -> Unit) {
-        val call = collectionsApiService.getCuratedCollection(id)
-        call.enqueue(UnsplashCallback(onComplete, onError))
-    }
-
-    fun getCollectionPhotos(id: String,
-                            page: Int?,
-                            perPage: Int?,
-                            onComplete: (List<Photo>) -> Unit,
-                            onError: (String) -> Unit) {
-        val call = collectionsApiService.getCollectionPhotos(id, page, perPage)
-        call.enqueue(UnsplashCallback(onComplete, onError))
-    }
-
-    @Deprecated("")
-    fun getCuratedCollectionPhotos(id: String,
-                                   page: Int?,
-                                   perPage: Int?,
-                                   onComplete: (List<Photo>) -> Unit,
-                                   onError: (String) -> Unit) {
-        val call = collectionsApiService.getCuratedCollectionPhotos(id, page, perPage)
-        call.enqueue(UnsplashCallback(onComplete, onError))
-    }
-
-    fun createCollection(title: String,
-                         description: String?,
-                         private: Boolean?,
-                         onComplete: (Collection) -> Unit,
-                         onError: (String) -> Unit) {
+    fun create(title: String,
+               description: String? = null,
+               private: Boolean? = null,
+               onComplete: (Collection) -> Unit,
+               onError: (String) -> Unit) {
         val call = collectionsApiService.create(title, description, private)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun update(id: String,
-                         title: String?,
-                         description: String?,
-                         private: Boolean?,
-                         onComplete: (Collection) -> Unit,
-                         onError: (String) -> Unit) {
+               title: String? = null,
+               description: String? = null,
+               private: Boolean? = null,
+               onComplete: (Collection) -> Unit,
+               onError: (String) -> Unit) {
         val call = collectionsApiService.update(id, title, description, private)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
@@ -110,17 +83,17 @@ class CollectionAPI(private var collectionsApiService: CollectionsEndpointInterf
     }
 
     fun addPhoto(collectionId: String,
-                             photoId: String,
-                             onComplete: (Collection) -> Unit,
-                             onError: (String) -> Unit) {
+                 photoId: String,
+                 onComplete: (Collection) -> Unit,
+                 onError: (String) -> Unit) {
         val call = collectionsApiService.addPhoto(collectionId, photoId)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun removePhoto(collectionId: String,
-                 photoId: String,
-                 onComplete: (Collection) -> Unit,
-                 onError: (String) -> Unit) {
+                    photoId: String,
+                    onComplete: (Collection) -> Unit,
+                    onError: (String) -> Unit) {
         val call = collectionsApiService.removePhoto(collectionId, photoId)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }

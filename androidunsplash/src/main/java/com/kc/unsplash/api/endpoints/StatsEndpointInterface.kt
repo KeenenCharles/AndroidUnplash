@@ -6,7 +6,10 @@ import retrofit2.http.GET
 
 interface StatsEndpointInterface {
 
-    @get:GET("stats/total")
-    val stats: Call<Stats>
+    @GET("stats/total")
+    fun getTotal(): Call<Stats>
+
+    @GET("stats/month")
+    fun getMonth(): Call<Stats>
 
 }

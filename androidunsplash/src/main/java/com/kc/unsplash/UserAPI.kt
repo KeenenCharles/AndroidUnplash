@@ -10,82 +10,82 @@ class UserAPI(private var userApiService: UserEndpointInterface) {
 
     fun getCurrent(onComplete: (User) -> Unit,
                    onError: (String) -> Unit) {
-        val call = userApiService.getCurrentUser()
+        val call = userApiService.getCurrent()
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun updateCurrent(user: User,
                       onComplete: (User) -> Unit,
                       onError: (String) -> Unit) {
-        val call = userApiService.updateCurrentUser(user)
+        val call = userApiService.updateCurrent(user)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun get(username: String,
-            onComplete: (User) -> Unit,
-            onError: (String) -> Unit) {
-        val call = userApiService.getUser(username)
+    fun getByUsername(username: String,
+                      onComplete: (User) -> Unit,
+                      onError: (String) -> Unit) {
+        val call = userApiService.getByUsername(username)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun getPortfolio(username: String,
                      onComplete: (Portfolio) -> Unit,
                      onError: (String) -> Unit) {
-        val call = userApiService.getUserPortfolio(username)
+        val call = userApiService.getPortfolio(username)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun getPhotos(username: String,
-                  page: Int? = 1,
-                  perPage: Int? = 10,
-                  order: Order = Order.LATEST,
+                  page: Int? = null,
+                  perPage: Int? = null,
+                  order: Order? = null,
                   stats: Boolean = false,
                   resolution: String = "days",
-                  quantity: Int? = 30,
+                  quantity: Int? = null,
                   onComplete: (List<Photo>) -> Unit,
                   onError: (String) -> Unit) {
-        val call = userApiService.getUserPhotos(username, page, perPage, order.order, stats, resolution, quantity)
+        val call = userApiService.getPhotos(username, page, perPage, order?.order, stats, resolution, quantity)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun getLikedPhotos(username: String,
-                       page: Int? = 1,
-                       perPage: Int? = 10,
-                       order: Order = Order.LATEST,
+                       page: Int? = null,
+                       perPage: Int? = null,
+                       order: Order? = null,
                        onComplete: (List<Photo>) -> Unit,
                        onError: (String) -> Unit) {
-        val call = userApiService.getUserLikedPhotos(username, page, perPage, order.order)
+        val call = userApiService.getLikedPhotos(username, page, perPage, order?.order)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun getCollections(username: String,
-                       page: Int? = 1,
-                       perPage: Int? = 10,
-                       order: Order = Order.LATEST,
+                       page: Int? = null,
+                       perPage: Int? = null,
+                       order: Order? = null,
                        stats: Boolean = false,
                        resolution: String = "days",
-                       quantity: Int? = 30,
+                       quantity: Int? = null,
                        onComplete: (List<Collection>) -> Unit,
                        onError: (String) -> Unit) {
-        val call = userApiService.getUserCollections(username, page, perPage, order.order, stats, resolution, quantity)
+        val call = userApiService.getCollections(username, page, perPage, order?.order, stats, resolution, quantity)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun getStatistics(username: String,
                       resolution: String = "days",
-                      quantity: Int? = 30,
+                      quantity: Int? = null,
                       onComplete: (Stats) -> Unit,
                       onError: (String) -> Unit) {
-        val call = userApiService.getUserStatistics(username, resolution, quantity)
+        val call = userApiService.getStatistics(username, resolution, quantity)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
     fun search(query: String,
-               page: Int = 1,
-               perPage: Int = 10,
+               page: Int? = null,
+               perPage: Int? = null,
                onComplete: (SearchResults<User>) -> Unit,
                onError: (String) -> Unit) {
-        val call = userApiService.searchUsers(query, page, perPage)
+        val call = userApiService.search(query, page, perPage)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
