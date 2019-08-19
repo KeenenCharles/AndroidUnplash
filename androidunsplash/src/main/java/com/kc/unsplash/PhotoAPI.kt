@@ -62,10 +62,10 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
                page: Int? = null,
                perPage: Int? = null,
                collections: String? = null,
-               orientation: String? = null,
+               orientation: Orientation? = null,
                onComplete: (SearchResults<Photo>) -> Unit,
                onError: (String) -> Unit) {
-        val call = photosApiService.search(query, page, perPage, collections, orientation)
+        val call = photosApiService.search(query, page, perPage, collections, orientation?.orientation)
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
