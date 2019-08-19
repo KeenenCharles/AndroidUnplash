@@ -15,8 +15,8 @@ class Unsplash(clientId: String, token: String? = null) {
     lateinit var photos: PhotoAPI
     lateinit var collections: CollectionAPI
     lateinit var users: UserAPI
+    lateinit var stats: StatsAPI
 
-    private lateinit var statsApiService: StatsEndpointInterface
     private lateinit var authApiService: AuthEndpointInterface
 
     private var mClientID = ""
@@ -36,12 +36,14 @@ class Unsplash(clientId: String, token: String? = null) {
         photos = PhotoAPI(API.retrofit.create(PhotosEndpointInterface::class.java))
         collections = CollectionAPI(API.retrofit.create(CollectionsEndpointInterface::class.java))
         users = UserAPI(API.retrofit.create(UserEndpointInterface::class.java))
+        stats = StatsAPI(API.retrofit.create(StatsEndpointInterface::class.java))
 
-        statsApiService = API.retrofit.create(StatsEndpointInterface::class.java)
         authApiService = API.retrofit.create(AuthEndpointInterface::class.java)
     }
 
-    fun authorize(context: Context, redirectURI: String, scopeList: List<Scope>) {
+    fun authorize(context: Context,
+                  redirectURI: String,
+                  scopeList: List<Scope>) {
         var scopes = StringBuilder()
         for (scope in scopeList) {
             scopes.append(scope.scope).append("+")
@@ -67,12 +69,6 @@ class Unsplash(clientId: String, token: String? = null) {
     fun setToken(token: String) {
         mToken = token
         createServices(mClientID, token)
-    }
-
-    fun getStats(onComplete: (Stats) -> Unit,
-                 onError: (String) -> Unit) {
-        val call = statsApiService.stats
-        call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
 }
