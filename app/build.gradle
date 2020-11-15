@@ -23,7 +23,7 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "UnsplashID", properties.getProperty("unsplash.id", "")
-            buildConfigField "String", "UnsplashToken", properties.getProperty("unsplash.secret", "")
+            buildConfigField "String", "UnsplashSecret", properties.getProperty("unsplash.secret", "")
         }
     }
     buildFeatures {

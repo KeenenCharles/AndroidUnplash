@@ -13,7 +13,7 @@ dependencies {
 
 ### Initialize Unsplash Client
 ~~~~~
-Unsplash unsplash = new Unsplash(YOUR_CLIENT_ID);
+val unsplash = Unsplash(YOUR_CLIENT_ID, YOUR_TOKEN);
 ~~~~~
 You can create an app for your project at <https://unsplash.com/developers>
 You'll receive a Client ID and a Client Secret
@@ -24,11 +24,8 @@ Unsplash uses OAuth2 for user authentication.
 You can call the `authorize()` method to start the process with the scopes you require access to. Ensure those scopes have been turned on in the Unsplash project dashboard.
 
 ~~~~~
-List<Scope> scopes = new ArrayList<>();
-scopes.add(Scope.PUBLIC);
-scopes.add(Scope.READ_USER);
-scopes.add(Scope.WRITE_USER);
-unsplash.authorize(MainActivity.this, "example://androidunsplash/callback", scopes);
+val scopes = listOf(Scope.PUBLIC, Scope.READ_USER, Scope.WRITE_USER)
+unsplash.authorize(this, YOUR_REDIRECT_URI, scopes)
 ~~~~~
 
 If your app is mobile only you can create a `redirectURI` by [defining a URI scheme](https://developer.android.com/training/app-links/deep-linking) in your Manifest 
@@ -36,78 +33,69 @@ If your app is mobile only you can create a `redirectURI` by [defining a URI sch
 Once the user has been redirected to your app you can need to retrieve the `code` parameter provided in the Intent and call the `getToken()` method.
 
 ~~~~~
-unsplash.getToken(CLIENT_SECRET, "example://androidunsplash/callback", code, new Unsplash.OnTokenLoadedListener() { ... });
+unsplash.getToken(YOUR_SECRET, YOUR_REDIRECT_URI, code, {
+		Log.d("Token", it.accessToken)
+	}, {
+		Log.d("Token", it)
+	})
 ~~~~~
 
 Add the token you receive to your unsplash client to authenticate user-related requests.
 ~~~~~
-unsplash.setToken(token.getAccessToken());
+unsplash.setToken(token.accessToken);
 ~~~~~
 
 ### Get A List of Photos
 ~~~~~
-unsplash.getPhotos(1, 10, Order.LATEST, new Unsplash.OnPhotosLoadedListener() {
-    @Override
-    public void onComplete(List<Photo> photos) {
-        int photoCount = photos.size();
-    }
-
-    @Override
-    public void onError(String error) {
-        Log.v("Error", error);
-    }
-});
+unsplash.photos.get(1, 10, Order.LATEST, 
+	onComplete = {
+		Log.d("Photos", "Photos Found $it")
+	},
+	onError = {
+		Log.d("Unsplash", it)
+	}
+)
 ~~~~~
 
 ### Get A Photo By Id
 ~~~~~
-unsplash.getPhoto(PHOTO_ID, new Unsplash.OnPhotoLoadedListener() {
-    @Override
-    public void onComplete(Photo photo) {
-        String photoUrl = photo.getUrls().getRegular();
-    }
-
-    @Override
-    public void onError(String error) {
-        Log.v("Error", error);
-    }
-});
+unsplash.photos.getById("ID",
+	onComplete = {
+		Log.d("Photos", "Photo Found $it")
+	},
+	onError = {
+		Log.d("Photos", it)
+	}
+)
 ~~~~~
 
 ### Search
 ~~~~~
-unsplash.searchPhotos(query, new Unsplash.OnSearchCompleteListener() {
-    @Override
-    public void onComplete(SearchResults results) {
-        Log.d("Photos", "Total Results Found " + results.getTotal());
-        List<Photo> photos = results.getResults();
-    }
-
-    @Override
-    public void onError(String error) {
-        Log.d("Unsplash", error);
-    }
-});
+unsplash.photos.search(query,
+	onComplete = {
+		Log.d("Photos", "Total Results Found " + it.total!!)
+		val photos = it.results
+	},
+	onError = {
+		Log.d("Unsplash", it)
+	}
+)
 ~~~~~
 
 ## Other Features
-~~~~~
-getCuratedPhotos()
-getRandomPhoto()
-getRandomPhotos()
-getPhotoDownloadLink
-getCollections()
-getFeaturedCollections()
-getCuratedCollections()
-getRelatedCollections()
-getCollection()
-getCuratedCollection()
-getCollectionPhotos()
-getCuratedCollectionPhotos()
-getStats()
-~~~~~
+You can access other features by using their respective classes.
+
+Collections with `unsplash.collections`
+
+Users with `unsplash.users`
+
+Stats with `unsplash.stats`
 
 Take a look at the API documentation for what each call does in detail <https://unsplash.com/documentation>
+
+## Java
+
+For Java support you can use the previous version of this library [here](https://github.com/KeenenCharles/AndroidUnplash/edit/master/README-JAVA.md)
 
 ## Built With This Library
 + [Walldrobe](https://play.google.com/store/apps/details?id=walldrobe.coffecode.com)

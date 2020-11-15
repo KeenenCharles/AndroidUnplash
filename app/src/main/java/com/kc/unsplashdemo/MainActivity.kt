@@ -19,8 +19,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val CLIENT_SECRET = "7e86b2e1bb32ee2660d1d272fecc27e046530ad1d2d2b9e21e1d24b36384207e"
-
     private val redirectURI = "example://androidunsplash/callback"
 
     private lateinit var unsplash: Unsplash
@@ -52,30 +50,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleAuthCallback() {
-       intent?.let {
+        intent?.let {
             val data = intent.data
-            if (data != null && data.query != null) {
-                val code = data.query!!.replace("code=", "")
+            val code = data?.query?.replace("code=", "")
 
-                unsplash.getToken(BuildConfig.UnsplashToken, redirectURI, code,
-                        {
-                            Log.d("Token", it.accessToken)
-                            unsplash.setToken(it.accessToken)
-                            sharedPref.edit().putString("TOKEN", it.accessToken).apply()
-                        },
-                        {
-                            Log.d("Token", it)
-                        }
-                )
-            }
-       }
+            unsplash.getToken(BuildConfig.UnsplashSecret, redirectURI, code!!, {
+                        Log.d("Token", it.accessToken)
+                        unsplash.setToken(it.accessToken)
+                        sharedPref.edit().putString("TOKEN", it.accessToken).apply()
+                    },
+                    {
+                        Log.d("Token", it)
+                    }
+            )
+        }
     }
 
     private fun authorize() {
-        val scopes = ArrayList<Scope>()
-        scopes.add(Scope.PUBLIC)
-        scopes.add(Scope.READ_USER)
-        scopes.add(Scope.WRITE_USER)
+        val scopes = listOf(Scope.PUBLIC, Scope.READ_USER, Scope.WRITE_USER)
         unsplash.authorize(this@MainActivity, redirectURI, scopes)
     }
 
