@@ -19,7 +19,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val CLIENT_ID = "63ca119bfe10aa51ce8f8e2cd532ad5d1c88f7254ae5c0aa7cf8401b291ee91a"
     private val CLIENT_SECRET = "7e86b2e1bb32ee2660d1d272fecc27e046530ad1d2d2b9e21e1d24b36384207e"
 
     private val redirectURI = "example://androidunsplash/callback"
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         sharedPref = getPreferences(Context.MODE_PRIVATE)
 
         val token = sharedPref.getString("TOKEN", null)
-        unsplash = Unsplash(CLIENT_ID, token)
+        unsplash = Unsplash(BuildConfig.UnsplashID, token)
 
         unsplash.photos.get(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
 
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             if (data != null && data.query != null) {
                 val code = data.query!!.replace("code=", "")
 
-                unsplash.getToken(CLIENT_SECRET, redirectURI, code,
+                unsplash.getToken(BuildConfig.UnsplashToken, redirectURI, code,
                         {
                             Log.d("Token", it.accessToken)
                             unsplash.setToken(it.accessToken)
