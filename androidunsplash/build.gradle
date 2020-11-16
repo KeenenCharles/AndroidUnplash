@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.github.panpf.bintray-publish'
 
 android {
     compileSdkVersion 29
@@ -26,6 +26,15 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -37,19 +46,12 @@ dependencies {
 }
 
 publish {
-    def groupProjectID = 'com.kc.androidunsplash'
-    def artifactProjectID = 'androidunsplash'
-    def publishVersionID = '2.0.2'
-
     userOrg = 'keenencharles'
     repoName = 'android-unsplash'
-    groupId = groupProjectID
-    artifactId = artifactProjectID
-    publishVersion = publishVersionID
+    groupId = 'com.kc.androidunsplash'
+    artifactId = 'androidunsplash'
+    publishVersion = '2.0.2'
     uploadName = 'android-unsplash'
     desc = 'An unofficial library to access the Unsplash API.'
     website = 'https://github.com/KeenenCharles/AndroidUnplash'
-}
-repositories {
-    mavenCentral()
 }

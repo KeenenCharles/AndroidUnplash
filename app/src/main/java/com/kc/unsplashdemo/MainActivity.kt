@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         sharedPref = getPreferences(Context.MODE_PRIVATE)
 
         val token = sharedPref.getString("TOKEN", null)
-        unsplash = Unsplash(BuildConfig.UnsplashID, token)
+        unsplash = Unsplash("", token)
 
         unsplash.photos.get(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
 
@@ -50,11 +50,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleAuthCallback() {
-        intent?.let {
-            val data = intent.data
-            val code = data?.query?.replace("code=", "")
+        val data = intent.data
+        val code = data?.query?.replace("code=", "")
 
-            unsplash.getToken(BuildConfig.UnsplashSecret, redirectURI, code!!, {
+        code?.let {
+            unsplash.getToken("", redirectURI, code, {
                         Log.d("Token", it.accessToken)
                         unsplash.setToken(it.accessToken)
                         sharedPref.edit().putString("TOKEN", it.accessToken).apply()
