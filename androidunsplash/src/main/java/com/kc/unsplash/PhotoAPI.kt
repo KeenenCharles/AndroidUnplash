@@ -8,6 +8,7 @@ import com.kc.unsplash.models.Download
 import com.kc.unsplash.models.Photo
 import com.kc.unsplash.models.SearchResults
 
+@JvmSuppressWildcards
 class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
 
     fun get(page: Int?,

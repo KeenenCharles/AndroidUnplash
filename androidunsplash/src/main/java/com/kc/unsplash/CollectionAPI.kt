@@ -6,6 +6,7 @@ import com.kc.unsplash.models.Collection
 import com.kc.unsplash.models.Photo
 import com.kc.unsplash.models.SearchResults
 
+@JvmSuppressWildcards
 class CollectionAPI(private var collectionsApiService: CollectionsEndpointInterface) {
 
     fun get(page: Int? = null,

@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@JvmSuppressWildcards
 class Unsplash(private var clientID: String, private var token: String? = null) {
 
     lateinit var photos: PhotoAPI

@@ -6,6 +6,7 @@ import com.kc.unsplash.api.endpoints.UserEndpointInterface
 import com.kc.unsplash.models.*
 import com.kc.unsplash.models.Collection
 
+@JvmSuppressWildcards
 class UserAPI(private var userApiService: UserEndpointInterface) {
 
     fun getCurrent(onComplete: (User) -> Unit,

@@ -5,6 +5,7 @@ import com.kc.unsplash.api.endpoints.StatsEndpointInterface
 import com.kc.unsplash.models.Stats
 import com.kc.unsplash.models.User
 
+@JvmSuppressWildcards
 class StatsAPI(private var statsApiService: StatsEndpointInterface) {
 
     fun getTotal(onComplete: (Stats) -> Unit,
