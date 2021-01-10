@@ -5,7 +5,7 @@ An unofficial Unsplash API library for Android
 Add the line below to your build.gradle to use:
 ~~~
 dependencies {
-    implementation 'com.kc.androidunsplash:androidunsplash:2.0.2'
+    implementation 'com.kc.androidunsplash:androidunsplash:2.0.3'
 }
 ~~~
 
