@@ -50,7 +50,7 @@ publish {
     repoName = 'android-unsplash'
     groupId = 'com.kc.androidunsplash'
     artifactId = 'androidunsplash'
-    publishVersion = '2.0.2'
+    publishVersion = '2.0.3'
     uploadName = 'android-unsplash'
     desc = 'An unofficial library to access the Unsplash API.'
     website = 'https://github.com/KeenenCharles/AndroidUnplash'
