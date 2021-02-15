@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kc.unsplash.Unsplash
 import com.kc.unsplash.api.Order
-import com.kc.unsplash.api.Orientation
 import com.kc.unsplash.api.Scope
 import com.kc.unsplashdemo.databinding.ActivityMainBinding
 import java.util.*

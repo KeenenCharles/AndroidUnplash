@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@android:color/black">
+        android:background="@android:color/black"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="8dp"
             android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/editText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp"
                 android:layout_weight="1"
+                android:background="@android:color/white"
                 android:ems="10"
                 android:hint="@string/search"
                 android:inputType="textPersonName"
-                android:textColor="@android:color/darker_gray"
-                android:background="@android:color/white"/>
+                android:textColor="@android:color/darker_gray" />
 
             <Button
                 android:id="@+id/searchButton"
                 android:layout_width="160dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="@string/go" />
 
@@ -43,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingRight="8dp"
-            tools:listitem="@layout/item_photo"/>
+            tools:listitem="@layout/item_photo" />
 
     </LinearLayout>
 
