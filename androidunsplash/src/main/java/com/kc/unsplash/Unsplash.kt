@@ -9,6 +9,7 @@ import com.kc.unsplash.api.UnsplashCallback
 import com.kc.unsplash.api.endpoints.*
 import com.kc.unsplash.models.Token
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -75,12 +76,17 @@ class Unsplash(private var clientID: String, private var token: String? = null) 
 
         val client = OkHttpClient.Builder()
                 .addInterceptor(headerInterceptor)
-                .build()
+
+        if (BuildConfig.DEBUG) {
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            client.addInterceptor(logging)
+        }
 
         return builder
                 .baseUrl("https://api.unsplash.com/")
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(client.build())
                 .build()
     }
 
