@@ -14,8 +14,8 @@ class UnsplashCallback<T>(private var onComplete: (T) -> Unit, private var  onEr
             }
             in 400..500 -> {
                 val res = response.errorBody()?.string()?.trim()
-                val error = Gson().fromJson(res, ErrorResponse::class.java)
-                onError(error.errors.firstOrNull() ?: "An error occurred")
+                val error = Gson().fromJson(res, ErrorResponse2::class.java)
+                onError(error.description ?: "An error occurred")
             }
         }
     }

@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         sharedPref = getPreferences(Context.MODE_PRIVATE)
 
         val token = sharedPref.getString("TOKEN", null)
-        unsplash = Unsplash("", token)
+        unsplash = Unsplash(BuildConfig.UnsplashID, token)
 
         unsplash.photos.get(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
 
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         val code = data?.query?.replace("code=", "")
 
         code?.let {
-            unsplash.getToken("", redirectURI, code, {
+            unsplash.getToken(BuildConfig.UnsplashSecret, redirectURI, code, {
                         Log.d("Token", it.accessToken)
                         unsplash.setToken(it.accessToken)
                         sharedPref.edit().putString("TOKEN", it.accessToken).apply()
