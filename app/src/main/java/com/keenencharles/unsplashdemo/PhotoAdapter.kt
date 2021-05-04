@@ -42,7 +42,7 @@ class PhotoAdapter(private var onSelected: (Photo) -> Unit) : RecyclerView.Adapt
     inner class ViewHolder(val binding: ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(photo: Photo) {
-            Picasso.get().load(photo.urls.small).into(binding.imageView)
+            Picasso.get().load(photo.urls?.small).into(binding.imageView)
             binding.executePendingBindings()
         }
     }
