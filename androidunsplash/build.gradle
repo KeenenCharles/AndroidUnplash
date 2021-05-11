@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
-apply plugin: 'com.github.panpf.bintray-publish'
+apply plugin: 'com.vanniktech.maven.publish'
 
 android {
     compileSdkVersion 30
@@ -9,7 +9,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
-        versionName "2.0.4"
+        versionName "3.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -26,15 +26,6 @@ android {
     }
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -48,15 +39,4 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0") {
         exclude module: "okhttp"
     }
-}
-
-publish {
-    userOrg = 'keenencharles'
-    repoName = 'android-unsplash'
-    groupId = 'com.keenencharles'
-    artifactId = 'androidunsplash'
-    publishVersion = '2.0.4'
-    uploadName = 'android-unsplash'
-    desc = 'An unofficial library to access the Unsplash API.'
-    website = 'https://github.com/KeenenCharles/AndroidUnplash'
 }
