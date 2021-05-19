@@ -12,10 +12,6 @@ interface CollectionsEndpointInterface {
     fun get(@Query("page") page: Int?,
             @Query("per_page") perPage: Int?): Call<List<Collection>>
 
-    @GET("collections/featured")
-    fun getFeatured(@Query("page") page: Int?,
-                    @Query("per_page") perPage: Int?): Call<List<Collection>>
-
     @GET("collections/{id}")
     fun getById(@Path("id") id: String): Call<Collection>
 

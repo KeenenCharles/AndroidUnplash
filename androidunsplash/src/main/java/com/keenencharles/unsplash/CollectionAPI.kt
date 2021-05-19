@@ -26,14 +26,6 @@ class CollectionAPI(private var collectionsApiService: CollectionsEndpointInterf
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun getFeatured(page: Int? = null,
-                    perPage: Int? = null,
-                    onComplete: (List<Collection>) -> Unit,
-                    onError: (String) -> Unit) {
-        val call = collectionsApiService.getFeatured(page, perPage)
-        call.enqueue(UnsplashCallback(onComplete, onError))
-    }
-
     fun getRelated(id: String,
                    onComplete: (List<Collection>) -> Unit,
                    onError: (String) -> Unit) {
