@@ -20,15 +20,6 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
-    fun getCuratedPhotos(page: Int?,
-                         perPage: Int?,
-                         order: Order,
-                         onComplete: (List<Photo>) -> Unit,
-                         onError: (String) -> Unit) {
-        val call = photosApiService.getCuratedPhotos(page, perPage, order.order)
-        call.enqueue(UnsplashCallback(onComplete, onError))
-    }
-
     fun getById(id: String,
                 onComplete: (Photo) -> Unit,
                 onError: (String) -> Unit) {

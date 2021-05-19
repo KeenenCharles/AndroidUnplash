@@ -16,11 +16,6 @@ interface PhotosEndpointInterface {
             @Query("per_page") perPage: Int?,
             @Query("order_by") orderBy: String?): Call<List<Photo>>
 
-    @GET("photos/curated")
-    fun getCuratedPhotos(@Query("page") page: Int?,
-                         @Query("per_page") perPage: Int?,
-                         @Query("order_by") orderBy: String): Call<List<Photo>>
-
     @GET("photos/random")
     fun getRandomPhotos(@Query("collections") collections: String?,
                         @Query("featured") featured: Boolean?,
