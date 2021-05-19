@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Collection(
-        var id: Int? = null,
+        var id: String? = null,
         var title: String? = null,
         var description: String? = null,
         var curated: Boolean? = null,
