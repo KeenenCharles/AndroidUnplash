@@ -17,12 +17,21 @@ interface PhotosEndpointInterface {
             @Query("order_by") orderBy: String?): Call<List<Photo>>
 
     @GET("photos/random")
+    fun getRandomPhoto(@Query("collections") collections: String?,
+                        @Query("featured") featured: Boolean?,
+                        @Query("username") username: String?,
+                        @Query("query") query: String?,
+                        @Query("orientation") orientation: String?,
+                        @Query("content_filter") content: String?): Call<Photo>
+
+    @GET("photos/random")
     fun getRandomPhotos(@Query("collections") collections: String?,
                         @Query("featured") featured: Boolean?,
                         @Query("username") username: String?,
                         @Query("query") query: String?,
                         @Query("orientation") orientation: String?,
-                        @Query("count") count: Int?): Call<List<Photo>>
+                        @Query("count") count: Int?,
+                        @Query("content_filter") content: String?): Call<List<Photo>>
 
     @GET("photos/{id}/download")
     fun getDownloadLink(@Path("id") id: String): Call<Download>
@@ -32,7 +41,9 @@ interface PhotosEndpointInterface {
                @Query("page") page: Int?,
                @Query("per_page") perPage: Int?,
                @Query("collections") collections: String?,
-               @Query("orientation") orientation: String?): Call<SearchResults<Photo>>
+               @Query("orientation") orientation: String?,
+               @Query("content_filter") content: String?,
+               @Query("color") color: String?): Call<SearchResults<Photo>>
 
     @PUT("photos/{id}")
     fun update(@Path("id") id: String,

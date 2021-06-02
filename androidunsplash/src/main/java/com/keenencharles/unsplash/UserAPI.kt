@@ -1,6 +1,6 @@
 package com.keenencharles.unsplash
 
-import com.keenencharles.unsplash.api.Order
+import com.keenencharles.unsplash.models.Order
 import com.keenencharles.unsplash.api.UnsplashCallback
 import com.keenencharles.unsplash.api.endpoints.UserEndpointInterface
 import com.keenencharles.unsplash.models.*

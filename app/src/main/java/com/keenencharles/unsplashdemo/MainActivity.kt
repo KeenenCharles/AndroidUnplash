@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.keenencharles.unsplash.Unsplash
-import com.keenencharles.unsplash.api.Order
+import com.keenencharles.unsplash.models.Order
 import com.keenencharles.unsplash.api.Scope
 import com.keenencharles.unsplashdemo.databinding.ActivityMainBinding
 import java.util.*
