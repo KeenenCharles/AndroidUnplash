@@ -1,11 +1,16 @@
 package com.keenencharles.unsplash
 
 import com.keenencharles.unsplash.api.UnsplashCallback
+import com.keenencharles.unsplash.api.UnsplashResource
+import com.keenencharles.unsplash.api.UnsplashResponseHandler
 import com.keenencharles.unsplash.api.endpoints.PhotosEndpointInterface
 import com.keenencharles.unsplash.models.*
 
 @JvmSuppressWildcards
-class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
+class PhotoAPI(
+    private var apiService: PhotosEndpointInterface,
+    private var responseHandler: UnsplashResponseHandler
+) {
 
     fun get(
         page: Int?,
@@ -14,8 +19,22 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         onComplete: (List<Photo>) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.get(page, perPage, order?.order)
+        val call = apiService.get(page, perPage, order?.order)
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun get(
+        page: Int?,
+        perPage: Int?,
+        order: Order?
+    ): UnsplashResource<List<Photo>> {
+        return try {
+            val res = apiService.getSuspend(page, perPage, order?.order)
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
     fun getById(
@@ -23,8 +42,20 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         onComplete: (Photo) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.getById(id)
+        val call = apiService.getById(id)
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun getById(
+        id: String
+    ): UnsplashResource<Photo> {
+        return try {
+            val res = apiService.getByIdSuspend(id)
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
     fun getRandomPhoto(
@@ -37,7 +68,7 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         onComplete: (Photo) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.getRandomPhoto(
+        val call = apiService.getRandomPhoto(
             collections,
             featured,
             username,
@@ -46,6 +77,30 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
             contentFilter?.type
         )
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun getRandomPhoto(
+        collections: String? = null,
+        featured: Boolean? = false,
+        username: String? = null,
+        query: String? = null,
+        orientation: Orientation? = null,
+        contentFilter: ContentFilter? = null
+    ): UnsplashResource<Photo> {
+        return try {
+            val res = apiService.getRandomPhotoSuspend(
+                collections,
+                featured,
+                username,
+                query,
+                orientation?.orientation,
+                contentFilter?.type
+            )
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
     fun getRandomPhotos(
@@ -59,7 +114,7 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         onComplete: (List<Photo>) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.getRandomPhotos(
+        val call = apiService.getRandomPhotos(
             collections,
             featured,
             username,
@@ -69,6 +124,32 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
             contentFilter?.type
         )
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun getRandomPhotos(
+        collections: String? = null,
+        featured: Boolean? = false,
+        username: String? = null,
+        query: String? = null,
+        orientation: Orientation? = null,
+        count: Int = 1,
+        contentFilter: ContentFilter? = null
+    ): UnsplashResource<List<Photo>> {
+        return try {
+            val res = apiService.getRandomPhotosSuspend(
+                collections,
+                featured,
+                username,
+                query,
+                orientation?.orientation,
+                count,
+                contentFilter?.type
+            )
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
     fun search(
@@ -82,7 +163,7 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         onComplete: (SearchResults<Photo>) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.search(
+        val call = apiService.search(
             query,
             page,
             perPage,
@@ -94,13 +175,51 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         call.enqueue(UnsplashCallback(onComplete, onError))
     }
 
+    suspend fun search(
+        query: String,
+        page: Int? = null,
+        perPage: Int? = null,
+        collections: String? = null,
+        orientation: Orientation? = null,
+        contentFilter: ContentFilter? = null,
+        color: Color? = null
+    ): UnsplashResource<SearchResults<Photo>> {
+        return try {
+            val res = apiService.searchSuspend(
+                query,
+                page,
+                perPage,
+                collections,
+                orientation?.orientation,
+                contentFilter?.type,
+                color?.color
+            )
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
+    }
+
     fun getDownloadLink(
         id: String,
         onComplete: (Download) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.getDownloadLink(id)
+        val call = apiService.getDownloadLink(id)
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun getDownloadLink(
+        id: String
+    ): UnsplashResource<Download> {
+        return try {
+            val res = apiService.getDownloadLinkSuspend(id)
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
     fun update(
@@ -120,11 +239,38 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         onComplete: (Photo) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.update(
+        val call = apiService.update(
             id, latitude, longitude, name, city,
             country, confidential, make, model, exposure_time, exposure_value, focal_length, iso
         )
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun update(
+        id: String,
+        latitude: String? = null,
+        longitude: String? = null,
+        name: String? = null,
+        city: String? = null,
+        country: String? = null,
+        confidential: String? = null,
+        make: String? = null,
+        model: String? = null,
+        exposure_time: String? = null,
+        exposure_value: String? = null,
+        focal_length: String? = null,
+        iso: String? = null
+    ): UnsplashResource<Photo> {
+        return try {
+            val res = apiService.updateSuspend(
+                id, latitude, longitude, name, city,
+                country, confidential, make, model, exposure_time, exposure_value, focal_length, iso
+            )
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
     fun like(
@@ -132,8 +278,20 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         onComplete: (Photo) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.like(id)
+        val call = apiService.like(id)
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun like(
+        id: String,
+    ): UnsplashResource<Photo> {
+        return try {
+            val res = apiService.likeSuspend(id)
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
     fun unlike(
@@ -141,8 +299,20 @@ class PhotoAPI(private var photosApiService: PhotosEndpointInterface) {
         onComplete: (Photo) -> Unit,
         onError: (String) -> Unit
     ) {
-        val call = photosApiService.unlike(id)
+        val call = apiService.unlike(id)
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun unlike(
+        id: String,
+    ): UnsplashResource<Photo> {
+        return try {
+            val res = apiService.unlikeSuspend(id)
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
 }

@@ -9,7 +9,13 @@ interface StatsEndpointInterface {
     @GET("stats/total")
     fun getTotal(): Call<Stats>
 
+    @GET("stats/total")
+    suspend fun getTotalSuspend(): Stats
+
     @GET("stats/month")
     fun getMonth(): Call<Stats>
+
+    @GET("stats/month")
+    suspend fun getMonthSuspend(): Stats
 
 }

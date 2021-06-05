@@ -13,7 +13,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.keenencharles.unsplash.Unsplash
 import com.keenencharles.unsplash.models.Order
 import com.keenencharles.unsplash.api.Scope
+import com.keenencharles.unsplash.api.UnsplashResource
 import com.keenencharles.unsplashdemo.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var adapter: PhotoAdapter
     private lateinit var sharedPref: SharedPreferences
+
+    private val TAG = "AndroidUnsplash"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,25 +50,50 @@ class MainActivity : AppCompatActivity() {
         val token = sharedPref.getString("TOKEN", null)
         unsplash = Unsplash(BuildConfig.UnsplashID, token)
 
-        unsplash.photos.get(1, 10, Order.LATEST, {adapter.updateList(it)}, {})
+        fetchPhotos()
 
         handleAuthCallback()
+    }
+
+    private fun fetchPhotos() {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val res = unsplash.photos.get(1, 10, Order.LATEST)
+
+                if (res is UnsplashResource.Success) {
+                    withContext(Dispatchers.Main) {
+                        adapter.updateList(res.data!!)
+                    }
+                }
+                else if (res is UnsplashResource.Error) {
+                    Log.d(TAG, res.errorMessage)
+                }
+            }
+        }
     }
 
     private fun handleAuthCallback() {
         val data = intent.data
         val code = data?.query?.replace("code=", "")
 
-        code?.let {
-            unsplash.getToken(BuildConfig.UnsplashSecret, redirectURI, code, {
-                        Log.d("Token", it.accessToken)
-                        unsplash.setToken(it.accessToken)
-                        sharedPref.edit().putString("TOKEN", it.accessToken).apply()
-                    },
-                    {
-                        Log.d("Token", it)
-                    }
-            )
+        code?.let { fetchToken(code) }
+    }
+
+    private fun fetchToken(code: String) {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val res = unsplash.getToken(BuildConfig.UnsplashSecret, redirectURI, code)
+
+                val token = res.data!!.accessToken
+
+                if (res is UnsplashResource.Success) {
+                    Log.d(TAG, token)
+                    unsplash.setToken(token)
+                    sharedPref.edit().putString("TOKEN", token).apply()
+                } else if (res is UnsplashResource.Error) {
+                    Log.d(TAG, res.errorMessage)
+                }
+            }
         }
     }
 
@@ -75,12 +107,12 @@ class MainActivity : AppCompatActivity() {
 
         unsplash.photos.search(query,
             onComplete = {
-                Log.d("Photos", "Total Results Found " + it.total!!)
+                Log.d(TAG, "Total Results Found " + it.total!!)
                 val photos = it.results
                 adapter.updateList(photos)
             },
             onError = {
-                Log.d("Unsplash", it)
+                Log.d(TAG, it)
             }
         )
     }

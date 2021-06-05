@@ -3,15 +3,9 @@ package com.keenencharles.unsplash
 import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
-import com.keenencharles.unsplash.BuildConfig
-import com.keenencharles.unsplash.api.HeaderInterceptor
-import com.keenencharles.unsplash.api.Scope
-import com.keenencharles.unsplash.api.UnsplashCallback
+import com.keenencharles.unsplash.api.*
 import com.keenencharles.unsplash.api.endpoints.*
 import com.keenencharles.unsplash.models.Token
-import com.keenencharles.unsplash.api.endpoints.AuthEndpointInterface
-import com.keenencharles.unsplash.api.endpoints.CollectionsEndpointInterface
-import com.keenencharles.unsplash.api.endpoints.PhotosEndpointInterface
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -36,17 +30,21 @@ class Unsplash(private var clientID: String, private var token: String? = null) 
     private fun createServices(clientId: String, token: String?) {
         val retrofit = createRetrofitClient(clientId, token)
 
-        photos = PhotoAPI(retrofit.create(PhotosEndpointInterface::class.java))
-        collections = CollectionAPI(retrofit.create(CollectionsEndpointInterface::class.java))
-        users = UserAPI(retrofit.create(UserEndpointInterface::class.java))
-        stats = StatsAPI(retrofit.create(StatsEndpointInterface::class.java))
+        val handler = UnsplashResponseHandler()
+        photos = PhotoAPI(retrofit.create(PhotosEndpointInterface::class.java), handler)
+        collections =
+            CollectionAPI(retrofit.create(CollectionsEndpointInterface::class.java), handler)
+        users = UserAPI(retrofit.create(UserEndpointInterface::class.java), handler)
+        stats = StatsAPI(retrofit.create(StatsEndpointInterface::class.java), handler)
 
         authApiService = retrofit.create(AuthEndpointInterface::class.java)
     }
 
-    fun authorize(context: Context,
-                  redirectURI: String,
-                  scopeList: List<Scope>) {
+    fun authorize(
+        context: Context,
+        redirectURI: String,
+        scopeList: List<Scope>
+    ) {
         var scopes = StringBuilder()
         for (scope in scopeList) {
             scopes.append(scope.scope).append("+")
@@ -54,19 +52,51 @@ class Unsplash(private var clientID: String, private var token: String? = null) 
 
         scopes = scopes.deleteCharAt(scopes.length - 1)
 
-        val url = "https://unsplash.com/oauth/authorize?client_id=$clientID&redirect_uri=$redirectURI&response_type=code&scope=$scopes"
+        val url =
+            "https://unsplash.com/oauth/authorize?client_id=$clientID&redirect_uri=$redirectURI&response_type=code&scope=$scopes"
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
         customTabsIntent.launchUrl(context, Uri.parse(url))
     }
 
-    fun getToken(clientSecret: String,
-                 redirectURI: String,
-                 code: String,
-                 onComplete: (Token) -> Unit,
-                 onError: (String) -> Unit) {
-        val call = authApiService.getToken("https://unsplash.com/oauth/token", clientID, clientSecret, redirectURI, code, "authorization_code")
+    fun getToken(
+        clientSecret: String,
+        redirectURI: String,
+        code: String,
+        onComplete: (Token) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val call = authApiService.getToken(
+            "https://unsplash.com/oauth/token",
+            clientID,
+            clientSecret,
+            redirectURI,
+            code,
+            "authorization_code"
+        )
         call.enqueue(UnsplashCallback(onComplete, onError))
+    }
+
+    suspend fun getToken(
+        clientSecret: String,
+        redirectURI: String,
+        code: String
+    ): UnsplashResource<Token> {
+        val responseHandler = UnsplashResponseHandler()
+        return try {
+            val res = authApiService.getTokenSuspend(
+                "https://unsplash.com/oauth/token",
+                clientID,
+                clientSecret,
+                redirectURI,
+                code,
+                "authorization_code"
+            )
+            responseHandler.handleSuccess(res)
+
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
+        }
     }
 
     fun setToken(token: String) {
@@ -79,7 +109,7 @@ class Unsplash(private var clientID: String, private var token: String? = null) 
         val headerInterceptor = HeaderInterceptor(clientID, token)
 
         val client = OkHttpClient.Builder()
-                .addInterceptor(headerInterceptor)
+            .addInterceptor(headerInterceptor)
 
         if (BuildConfig.DEBUG) {
             val logging = HttpLoggingInterceptor()
@@ -88,10 +118,10 @@ class Unsplash(private var clientID: String, private var token: String? = null) 
         }
 
         return builder
-                .baseUrl("https://api.unsplash.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client.build())
-                .build()
+            .baseUrl("https://api.unsplash.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client.build())
+            .build()
     }
 
 }

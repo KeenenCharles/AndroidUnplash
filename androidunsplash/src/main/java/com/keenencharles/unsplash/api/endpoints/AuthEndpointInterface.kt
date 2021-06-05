@@ -15,4 +15,12 @@ interface AuthEndpointInterface {
                  @Query("redirect_uri") redirectURI: String,
                  @Query("code") code: String,
                  @Query("grant_type") grantType: String): Call<Token>
+
+    @POST
+    suspend fun getTokenSuspend(@Url url: String,
+                 @Query("client_id") clientID: String,
+                 @Query("client_secret") clientSecret: String,
+                 @Query("redirect_uri") redirectURI: String,
+                 @Query("code") code: String,
+                 @Query("grant_type") grantType: String): Token
 }
