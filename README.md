@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.keenencharles:androidunsplash:3.0.2'
+    implementation 'com.keenencharles:androidunsplash:3.1.0'
 }
 ~~~
 
@@ -84,6 +84,18 @@ unsplash.photos.search(query,
 		Log.d("Unsplash", it)
 	}
 )
+~~~~~
+
+## Coroutines
+You can also use the library with coroutines by using the same functions without any callbacks.
+~~~~~
+val res = unsplash.photos.search(query)
+if (res is UnsplashResource.Success) {
+    Log.d(TAG, "Photos found")
+}
+else if (res is UnsplashResource.Error) {
+    Log.d(TAG, res.errorMessage)
+}
 ~~~~~
 
 ## Other Features
