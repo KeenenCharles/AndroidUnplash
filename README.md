@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.keenencharles:androidunsplash:3.1.0'
+    implementation 'com.keenencharles:androidunsplash:3.1.1'
 }
 ~~~
 
