@@ -25,3 +25,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.keenencharles.unsplash.models.** { *; }
+-keep class kotlin.coroutines.Continuation { *; }
