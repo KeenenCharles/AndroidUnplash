@@ -111,7 +111,7 @@ Take a look at the API documentation for what each call does in detail <https://
 
 ## Java
 
-For Java support you can use the previous version of this library [here](https://github.com/KeenenCharles/AndroidUnplash/edit/master/README-JAVA.md)
+For Java support you can use the previous version of this library [here](https://github.com/KeenenCharles/AndroidUnplash/blob/master/README-JAVA.md)
 
 ## Built With This Library
 + [Walldrobe](https://play.google.com/store/apps/details?id=walldrobe.coffecode.com)
